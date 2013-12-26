@@ -1,4 +1,4 @@
-# gulp-svgicons2svgfont [![NPM version][https://badge.fury.io/js/gulp-svgicons2svgfont]][https://npmjs.org/package/gulp-svgicons2svgfont] [![Build status][https://secure.travis-ci.org/nfroidure/gulp-svgicons2svgfont.png]][https://travis-ci.org/nfroidure/gulp-svgicons2svgfont]
+# gulp-svgicons2svgfont [![NPM version](https://badge.fury.io/js/gulp-svgicons2svgfont)](https://npmjs.org/package/gulp-svgicons2svgfont) [![Build status][https://secure.travis-ci.org/nfroidure/gulp-svgicons2svgfont.png]](https://travis-ci.org/nfroidure/gulp-svgicons2svgfont)
 > Create an SVG font from several SVG icons.
 
 ## Usage
@@ -25,7 +25,7 @@ gulp.task('Iconfont', function(){
 
 ## API
 
-### handlebars(directory, options)
+### svgicons2svgfont(directory, options)
 
 #### directory
 Type: `String`
