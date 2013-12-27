@@ -32,6 +32,7 @@ module.exports = function(options) {
 
   // Generating the font
   function endStream() {
+    var _that = this;
 
     // No icons, exit
     if (files.length === 0) return this.emit('end');
@@ -85,9 +86,16 @@ module.exports = function(options) {
         return glyph;
       }), options)
     });
-
-    this.emit('data', joinedFile);
-    this.emit('end');
+    if(files[0].isBuffer()) {
+      joinedFile.contents.pipe(es.wait(function(err, data) {
+        joinedFile.contents = new Buffer(data);
+        _that.emit('data', joinedFile);
+        _that.emit('end');
+      }));
+    } else {
+      this.emit('data', joinedFile);
+      this.emit('end');
+    }
   }
 
   return es.through(bufferContents, endStream);
