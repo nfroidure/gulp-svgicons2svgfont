@@ -11,8 +11,8 @@ describe('svgicons2svgfont', function() {
 
   it('should work with cleanicons', function(done) {
     gulp.src('test/fixtures/cleanicons/*.svg')
-      .pipe(svgicons2svgfont('test/results/', {
-        font: 'cleanicons'
+      .pipe(svgicons2svgfont({
+        fontName: 'cleanicons'
       })).on('data', function(file) {
         file.pipe(es.wait(function(err, data) {
           assert.equal(err, undefined);
@@ -27,8 +27,8 @@ describe('svgicons2svgfont', function() {
 
   it('should work with prefixedicons', function(done) {
     gulp.src('test/fixtures/prefixedicons/*.svg')
-      .pipe(svgicons2svgfont('test/results/', {
-        font: 'prefixedicons'
+      .pipe(svgicons2svgfont({
+        fontName: 'prefixedicons'
       })).on('data', function(file) {
         file.pipe(es.wait(function(err, data) {
           assert.equal(err, undefined);
@@ -43,8 +43,8 @@ describe('svgicons2svgfont', function() {
 
   it('should work with originalicons', function(done) {
     gulp.src('test/fixtures/originalicons/*.svg')
-      .pipe(svgicons2svgfont('test/results/', {
-        font: 'originalicons'
+      .pipe(svgicons2svgfont({
+        fontName: 'originalicons'
       })).on('data', function(file) {
         file.pipe(es.wait(function(err, data) {
           assert.equal(err, undefined);

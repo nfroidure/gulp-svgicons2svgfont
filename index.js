@@ -5,7 +5,7 @@ var svgicons2svgfont = require('svgicons2svgfont')
   , PassThrough = require('stream').PassThrough
 ;
 
-module.exports = function(destination, options) {
+module.exports = function(options) {
   var files = []
     , usedCodePoints = []
     , curCodepoint = 0xE001
@@ -13,20 +13,25 @@ module.exports = function(destination, options) {
 
   options = options || {};
 
-  if (!options.font) {
-    throw new Error("Missing font name option for gulp-svgicons2svgfont");
+  if (!options.fontName) {
+    throw new Error("Missing options.fontName for gulp-svgicons2svgfont");
   }
+  options.log = function() {
+    gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
+      [].slice.call(arguments, 0).concat()));
+  };
+  options.error = function() {
+    gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
+      [].slice.call(arguments, 0).concat()));
+  };
 
   // Collecting icons
-  function bufferContents(file){
+  function bufferContents(file) {
     files.push(file);
   }
 
   // Generating the font
-  function endStream(){
-
-    var fontDestination = Path.join(files[0].base, destination, options.font)
-      + '.svg';
+  function endStream() {
 
     // No icons, exit
     if (files.length === 0) return this.emit('end');
@@ -35,16 +40,15 @@ module.exports = function(destination, options) {
     var joinedFile = new gutil.File({
       cwd: files[0].cwd,
       base: files[0].base,
-      path: fontDestination,
+      path: Path.join(files[0].base, options.fontName) + '.svg',
       contents: svgicons2svgfont(files.map(function(file) {
         // Creating an object for each icon
         var matches = Path.basename(file.path).match(/^(?:u([0-9a-f]{4})\-)?(.*).svg$/i)
-          , th = file.pipe(new PassThrough())
           , glyph = {
             name: matches[2],
             codepoint: 0,
             file: file.path,
-            stream: th
+            stream: file.pipe(new PassThrough())
           };
         if(matches&&matches[1]) {
           glyph.codepoint = parseInt(matches[1], 16);
@@ -65,10 +69,11 @@ module.exports = function(destination, options) {
                 + '-' + glyph.name + '.svg',
                 function(err) {
                   if(err) {
-                    error("Could not save codepoint: " + 'u'
-                      + i.toString(16).toUpperCase() +' for ' + glyph.name + '.svg');
+                    gutil.log("Could not save codepoint: "
+                      + 'u' + i.toString(16).toUpperCase()
+                      +' for ' + glyph.name + '.svg');
                   } else {
-                    log("Saved codepoint: "
+                    gutil.log("Saved codepoint: "
                       + 'u' + glyph.codepoint.toString(16).toUpperCase()
                       +' for ' + glyph.name + '.svg');
                   }
@@ -78,17 +83,7 @@ module.exports = function(destination, options) {
           }
         }
         return glyph;
-      }), {
-        fontName: options.font,
-        log: function() {
-          gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
-            [].slice.call(arguments, 0).concat()));
-        },
-        error: function() {
-          gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
-            [].slice.call(arguments, 0).concat()));
-        }
-      })
+      }), options)
     });
 
     this.emit('data', joinedFile);

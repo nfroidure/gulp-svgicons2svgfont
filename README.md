@@ -16,7 +16,7 @@ var svgicons2svgfont = require('gulp-svgicons2svgfont');
 
 gulp.task('Iconfont', function(){
   gulp.src(['assets/icons/*.svg'])
-    .pipe(svgicons2svgfont('www/font/',{
+    .pipe(svgicons2svgfont({
       fontName: 'myfont'
      }))
     .pipe(gulp.dest('www/font/'));
@@ -25,19 +25,13 @@ gulp.task('Iconfont', function(){
 
 ## API
 
-### svgicons2svgfont(directory, options)
+### svgicons2svgfont(options)
 
-#### directory
-Type: `String`
-Default: `''`
-
-The directory in wich the font should be saved (??).
-
-#### options.font
+#### options.fontName
 Type: `String`
 Default value: `'iconfont'`
 
-A string value that is used to name your font-family.
+A string value that is used to name your font-family (required).
 
 #### options.fixedWidth
 Type: `Boolean`
