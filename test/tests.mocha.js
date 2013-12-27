@@ -15,11 +15,13 @@ describe('svgicons2svgfont', function() {
         fontName: 'cleanicons'
       })).on('data', function(file) {
           assert.equal(file.isBuffer(), true);
-          assert.equal(
-            file.contents.toString('utf8'),
-            fs.readFileSync('test/expected/test-cleanicons-font.svg')
-          );
-          done();
+          file.getContentsAsBuffer(function(err, buf) {
+            assert.equal(
+              file.contents.toString('utf8'),
+              fs.readFileSync('test/expected/test-cleanicons-font.svg')
+            );
+            done();
+          });
       });
   });
 
@@ -46,11 +48,13 @@ describe('svgicons2svgfont', function() {
         fontName: 'prefixedicons'
       })).on('data', function(file) {
           assert.equal(file.isBuffer(), true);
-          assert.equal(
-            file.contents.toString('utf8'),
-            fs.readFileSync('test/expected/test-prefixedicons-font.svg','utf8')
-          );
-          done();
+          file.getContentsAsBuffer(function(err, buf) {
+            assert.equal(
+              file.contents.toString('utf8'),
+              fs.readFileSync('test/expected/test-prefixedicons-font.svg')
+            );
+            done();
+          });
       });
   });
 
@@ -77,11 +81,13 @@ describe('svgicons2svgfont', function() {
         fontName: 'originalicons'
       })).on('data', function(file) {
           assert.equal(file.isBuffer(), true);
-          assert.equal(
-            file.contents.toString('utf8'),
-            fs.readFileSync('test/expected/test-originalicons-font.svg')
-          );
-          done();
+          file.getContentsAsBuffer(function(err, buf) {
+            assert.equal(
+              file.contents.toString('utf8'),
+              fs.readFileSync('test/expected/test-originalicons-font.svg')
+            );
+            done();
+          });
       });
   });
 
