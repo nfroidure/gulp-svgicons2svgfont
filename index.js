@@ -41,7 +41,6 @@ module.exports = function(options) {
     var joinedFile = new gutil.File({
       cwd: files[0].cwd,
       base: files[0].base,
-      buffer: files[0].buffer,
       path: Path.join(files[0].base, options.fontName) + '.svg',
       contents: svgicons2svgfont(files.map(function(file) {
         // Creating an object for each icon
@@ -87,16 +86,8 @@ module.exports = function(options) {
         return glyph;
       }), options)
     });
-    /*if(files[0].isBuffer()) {
-      joinedFile.pipe(es.wait(function(err, data) {
-        joinedFile.contents = Buffer(data);
-        _that.emit('data', joinedFile);
-        _that.emit('end');
-      }));
-    } else {*/
-      this.emit('data', joinedFile);
-      this.emit('end');
-    /*}*/
+    this.emit('data', joinedFile);
+    this.emit('end');
   }
 
   return es.through(bufferContents, endStream);
