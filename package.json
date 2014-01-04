@@ -16,11 +16,11 @@
   "author": "Nicolas Froidure",
   "license": "MIT",
   "dependencies": {
-    "event-stream": "~3.0.20",
     "gulp-util": "~2.2.0",
     "svgicons2svgfont": "0.0.4"
   },
   "devDependencies": {
+    "event-stream": "~3.0.20",
     "mocha": "~1.16.2",
     "gulp": "~3.2.1"
   }

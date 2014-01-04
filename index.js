@@ -1,8 +1,7 @@
 var svgicons2svgfont = require('svgicons2svgfont')
-  , es = require('event-stream')
   , Path = require('path')
   , gutil = require('gulp-util')
-  , PassThrough = require('stream').PassThrough
+  , Stream = require('stream')
 ;
 
 module.exports = function(options) {
@@ -14,28 +13,32 @@ module.exports = function(options) {
   options = options || {};
 
   if (!options.fontName) {
-    throw new Error("Missing options.fontName for gulp-svgicons2svgfont");
+    throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
   }
   options.log = function() {
     gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
       [].slice.call(arguments, 0).concat()));
   };
-  options.error = function() {
-    gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
-      [].slice.call(arguments, 0).concat()));
-  };
+
+  var stream = new Stream.Transform({objectMode: true});
 
   // Collecting icons
-  function bufferContents(file) {
+  stream._transform = function bufferContents(file, unused, done) {
     files.push(file);
-  }
+    done();
+  };
 
   // Generating the font
-  function endStream() {
-    var _that = this;
+  stream._flush = function endStream(done) {
 
     // No icons, exit
     if (files.length === 0) return this.emit('end');
+
+    // Wrap error function
+    options.error = function() {
+      stream.emit('error', new PluginError('svgicons2svgfont',
+        [].slice.call(arguments, 0).concat()));
+    };
 
     // Create the font file
     var joinedFile = new gutil.File({
@@ -49,7 +52,7 @@ module.exports = function(options) {
             name: matches[2],
             codepoint: 0,
             file: file.path,
-            stream: file.pipe(new PassThrough())
+            stream: file.pipe(new Stream.PassThrough())
           };
         if(matches&&matches[1]) {
           glyph.codepoint = parseInt(matches[1], 16);
@@ -86,9 +89,9 @@ module.exports = function(options) {
         return glyph;
       }), options)
     });
-    this.emit('data', joinedFile);
-    this.emit('end');
-  }
+    stream.push(joinedFile);
+    done();
+  };
 
-  return es.through(bufferContents, endStream);
+  return stream;
 };
