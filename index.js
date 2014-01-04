@@ -89,8 +89,20 @@ module.exports = function(options) {
         return glyph;
       }), options)
     });
-    stream.push(joinedFile);
-    done();
+    if(files[0].isBuffer()) {
+      var buf = new Buffer('');
+      joinedFile.contents.on('data', function(chunk) {
+        buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
+      });
+      joinedFile.contents.on('end', function() {
+        joinedFile.contents = buf;
+        stream.push(joinedFile);
+        done();
+      });
+    } else {
+      stream.push(joinedFile);
+      done();
+    }
   };
 
   return stream;
