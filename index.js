@@ -24,7 +24,9 @@ module.exports = function(options) {
 
   // Collecting icons
   stream._transform = function bufferContents(file, unused, done) {
-    files.push(file);
+    if(file.isBuffer() || file.isStream()) {
+      files.push(file);
+    }
     done();
   };
 
