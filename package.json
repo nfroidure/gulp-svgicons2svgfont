@@ -2,9 +2,9 @@
   "name": "gulp-svgicons2svgfont",
   "version": "0.0.1",
   "description": "Create a SVG font from several SVG icons",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "mocha test/*.mocha.js"
+    "test": "node_modules/mocha/bin/mocha tests/*.mocha.js"
   },
   "keywords": [
     "gulpplugin",
