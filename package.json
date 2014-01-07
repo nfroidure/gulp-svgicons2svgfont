@@ -1,6 +1,6 @@
 {
   "name": "gulp-svgicons2svgfont",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Create a SVG font from several SVG icons",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,24 @@
     "icon",
     "font"
   ],
-  "author": "Nicolas Froidure",
-  "license": "MIT",
+  "homepage": "https://github.com/nfroidure/gulp-svgicons2svgfont",
+  "author": {
+    "name": "Nicolas Froidure",
+    "url": "http://www.insertafter.com/blog.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nfroidure/gulp-svgicons2svgfont.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nfroidure/gulp-svgicons2svgfont/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/nfroidure/gulp-svgicons2svgfont/blob/master/LICENSE"
+    }
+  ],
   "dependencies": {
     "gulp-util": "~2.2.0",
     "svgicons2svgfont": "0.0.4"
