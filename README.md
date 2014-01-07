@@ -23,6 +23,12 @@ gulp.task('Iconfont', function(){
 });
 ```
 
+Every icon must be prefixed with it's codepoint. The `appendCodepoints` option
+ allows to do it automatically. Then, in your own CSS, you just have to use
+ the corresponding codepoint to display your icon. See this
+ [sample less mixin](https://github.com/ChtiJS/chtijs.francejs.org/blob/master/documents/less/_icons.less)
+ for a real world usage.
+
 ## API
 
 ### svgicons2svgfont(options)
