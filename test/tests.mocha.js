@@ -7,7 +7,7 @@ var fs = require('fs')
 ;
 
 
-describe('svgicons2svgfont', function() {
+describe('gulp-svgicons2svgfont', function() {
 
   describe('in strem mode', function() {
 
@@ -105,6 +105,32 @@ describe('svgicons2svgfont', function() {
               file.contents.toString('utf8'),
               fs.readFileSync('test/expected/test-originalicons-font.svg')
             );
+            done();
+        });
+    });
+
+  });
+
+
+  describe('Using gulp.dest in buffer mode', function() {
+
+    it('should work with cleanicons', function(done) {
+      gulp.src('test/fixtures/cleanicons/*.svg')
+        .pipe(svgicons2svgfont({
+          fontName: 'cleanicons'
+        }))
+        .pipe(gulp.dest('test/results/'))
+        .on('end', function() {
+            assert.equal(
+              fs.readFileSync('test/results/cleanicons.svg',{
+                encoding: 'utf-8'
+              }),
+              fs.readFileSync('test/expected/test-cleanicons-font.svg',{
+                encoding: 'utf-8'
+              })
+            );
+            fs.unlinkSync(__dirname + '/results/cleanicons.svg');
+            fs.rmdirSync(__dirname + '/results/');
             done();
         });
     });
