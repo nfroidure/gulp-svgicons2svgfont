@@ -66,7 +66,6 @@ module.exports = function(options) {
         } while(-1 !== usedCodePoints.indexOf(glyph.codepoint))
         usedCodePoints.push(glyph.codepoint);
         if(options.appendCodepoints) {
-          glyph.stream.on('end', function() {
             Fs.rename(glyph.file, Path.dirname(glyph.file) + '/'
               + 'u' + glyph.codepoint.toString(16).toUpperCase()
               + '-' + glyph.name + '.svg',
@@ -82,7 +81,6 @@ module.exports = function(options) {
                 }
               }
             );
-          });
         }
       }
       return glyph;

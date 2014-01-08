@@ -63,22 +63,58 @@ describe('gulp-svgicons2svgfont', function() {
     });
 
     it('should work with unprefixed icons (stream)', function(done) {
-      gulp.src(__dirname + '/fixtures/unprefixed/*.svg', {buffer: false})
-        .pipe(gulp.dest(__dirname + '/fixtures/unprefixedcopy/'));/*
-        .pipe(svgicons2svgfont({
-          fontName: 'originalicons'
-        })).on('data', function(file) {
-          assert.equal(file.isStream(), true);
-          file.pipe(es.wait(function(err, data) {
-            assert.equal(err, undefined);
-            assert.equal(
-              data,
-              fs.readFileSync(__dirname + '/expected/test-originalicons-font.svg', 'utf8')
-            );
-            done();
-          }));
-        });*/
-        done();
+      gulp.src(__dirname + '/fixtures/unprefixedicons/*.svg', {buffer: false})
+        .pipe(gulp.dest(__dirname + '/results/unprefixedicons/'))
+        .pipe(es.wait(function() {
+          gulp.src(__dirname + '/results/unprefixedicons/*.svg', {buffer: false})
+            .pipe(svgicons2svgfont({
+              fontName: 'unprefixedicons',
+              appendCodepoints: true
+            }))
+            .pipe(gulp.dest(__dirname + '/results/'))
+            .on('data', function(file) {
+              assert.equal(fs.existsSync(__dirname
+                + '/results/unprefixedicons/uE001-arrow-down.svg'), true);
+              assert.equal(
+                fs.readFileSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg', 'utf8'),
+                fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-down.svg', 'utf8')
+              );
+              assert.equal(fs.existsSync(__dirname
+                + '/results/unprefixedicons/uE002-arrow-left.svg'), true);
+              assert.equal(
+                fs.readFileSync(__dirname + '/results/unprefixedicons/uE002-arrow-left.svg', 'utf8'),
+                fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-left.svg', 'utf8')
+              );
+              assert.equal(fs.existsSync(__dirname
+                + '/results/unprefixedicons/uE003-arrow-right.svg'), true);
+              assert.equal(
+                fs.readFileSync(__dirname + '/results/unprefixedicons/uE003-arrow-right.svg', 'utf8'),
+                fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-right.svg', 'utf8')
+              );
+              assert.equal(fs.existsSync(__dirname
+                + '/results/unprefixedicons/uE004-arrow-up.svg'), true);
+              assert.equal(
+                fs.readFileSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg', 'utf8'),
+                fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-up.svg', 'utf8')
+              );
+              assert.equal(file.isStream(), true);
+              file.pipe(es.wait(function(err, data) {
+                assert.equal(err, undefined);
+                assert.equal(
+                  data,
+                  fs.readFileSync(__dirname + '/expected/test-unprefixedicons-font.svg', 'utf8')
+                );
+                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg');
+                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE002-arrow-left.svg');
+                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE003-arrow-right.svg');
+                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg');
+                fs.rmdirSync(__dirname + '/results/unprefixedicons/');
+                fs.unlinkSync(__dirname + '/results/unprefixedicons.svg');
+                fs.rmdirSync(__dirname + '/results/');
+                done();
+              }));
+            });
+        }));
     });
 
   });
@@ -162,10 +198,6 @@ describe('gulp-svgicons2svgfont', function() {
             .pipe(svgicons2svgfont({
               fontName: 'unprefixedicons',
               appendCodepoints: true
-            }))
-            .pipe(es.map(function(file, cb) {
-              console.log('test', file.path);
-              cb(null, file);
             }))
             .pipe(gulp.dest(__dirname + '/results/'))
             .on('data', function(file) {
