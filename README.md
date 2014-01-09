@@ -63,3 +63,9 @@ Type: `Boolean`
 Default value: `false`
 
 Allow to append codepoints to icon files in order to always keep the same codepoints.
+
+#### options.ignoreExt
+Type: `Boolean`
+Default value: `false`
+
+Set to true to also convert read icons that doesn't have the .svg extension.

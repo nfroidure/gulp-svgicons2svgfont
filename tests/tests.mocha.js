@@ -4,10 +4,15 @@ var fs = require('fs')
   , es = require('event-stream')
   , svgicons2svgfont = require('../src/index')
   , assert = require('assert')
+  , rimraf = require('rimraf')
 ;
 
 
 describe('gulp-svgicons2svgfont', function() {
+
+  afterEach(function() {
+    rimraf.sync(__dirname + '/results');
+  })
 
   describe('in stream mode', function() {
 
@@ -28,7 +33,7 @@ describe('gulp-svgicons2svgfont', function() {
         });
     });
 
-    it('should work with prefixedicons (stream)', function(done) {
+    it('should work with prefixedicons', function(done) {
       gulp.src(__dirname + '/fixtures/prefixedicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
           fontName: 'prefixedicons'
@@ -45,7 +50,7 @@ describe('gulp-svgicons2svgfont', function() {
         });
     });
 
-    it('should work with originalicons (stream)', function(done) {
+    it('should work with originalicons', function(done) {
       gulp.src(__dirname + '/fixtures/originalicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
           fontName: 'originalicons'
@@ -62,7 +67,8 @@ describe('gulp-svgicons2svgfont', function() {
         });
     });
 
-    it('should work with unprefixed icons (stream)', function(done) {
+    it('should work with unprefixed icons', function(done) {
+      var cnt;
       gulp.src(__dirname + '/fixtures/unprefixedicons/*.svg', {buffer: false})
         .pipe(gulp.dest(__dirname + '/results/unprefixedicons/'))
         .pipe(es.wait(function() {
@@ -71,8 +77,15 @@ describe('gulp-svgicons2svgfont', function() {
               fontName: 'unprefixedicons',
               appendCodepoints: true
             }))
-            .pipe(gulp.dest(__dirname + '/results/'))
             .on('data', function(file) {
+              assert.equal(file.isStream(), true);
+              file.contents.pipe(es.wait(function(err, data) {
+                assert.equal(err, undefined);
+                cnt = data;
+              }));
+            })
+            .pipe(gulp.dest(__dirname + '/results/'))
+            .on('end', function() {
               assert.equal(fs.existsSync(__dirname
                 + '/results/unprefixedicons/uE001-arrow-down.svg'), true);
               assert.equal(
@@ -97,22 +110,11 @@ describe('gulp-svgicons2svgfont', function() {
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-up.svg', 'utf8')
               );
-              assert.equal(file.isStream(), true);
-              file.pipe(es.wait(function(err, data) {
-                assert.equal(err, undefined);
-                assert.equal(
-                  data,
-                  fs.readFileSync(__dirname + '/expected/test-unprefixedicons-font.svg', 'utf8')
-                );
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE002-arrow-left.svg');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE003-arrow-right.svg');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg');
-                fs.rmdirSync(__dirname + '/results/unprefixedicons/');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons.svg');
-                fs.rmdirSync(__dirname + '/results/');
-                done();
-              }));
+              assert.equal(
+                cnt,
+                fs.readFileSync(__dirname + '/expected/test-unprefixedicons-font.svg', 'utf8')
+              );
+              done();
             });
         }));
     });
@@ -232,13 +234,6 @@ describe('gulp-svgicons2svgfont', function() {
                   data,
                   fs.readFileSync(__dirname + '/expected/test-unprefixedicons-font.svg', 'utf8')
                 );
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE002-arrow-left.svg');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE003-arrow-right.svg');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg');
-                fs.rmdirSync(__dirname + '/results/unprefixedicons/');
-                fs.unlinkSync(__dirname + '/results/unprefixedicons.svg');
-                fs.rmdirSync(__dirname + '/results/');
                 done();
               }));
             });
