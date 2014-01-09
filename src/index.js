@@ -3,6 +3,7 @@ var svgicons2svgfont = require('svgicons2svgfont')
   , gutil = require('gulp-util')
   , Stream = require('stream')
   , Fs = require('fs')
+  , path = require('path')
 ;
 
 module.exports = function(options) {
@@ -12,6 +13,7 @@ module.exports = function(options) {
   ;
 
   options = options || {};
+  options.ignoreExt = options.ignoreExt || false;
 
   if (!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
@@ -25,6 +27,8 @@ module.exports = function(options) {
 
   // Collecting icons
   stream._transform = function bufferContents(file, unused, done) {
+    if(file.isNull()) return done(); // Do nothing
+    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) return done();
     if(file.isBuffer() || file.isStream()) {
       files.push(file);
     }

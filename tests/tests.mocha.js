@@ -5,6 +5,7 @@ var fs = require('fs')
   , svgicons2svgfont = require('../src/index')
   , assert = require('assert')
   , rimraf = require('rimraf')
+  , Stream = require('stream')
 ;
 
 
@@ -119,6 +120,26 @@ describe('gulp-svgicons2svgfont', function() {
         }));
     });
 
+    it('should let non-svg files pass through', function(done) {
+
+        var s = svgicons2svgfont({
+          fontName: 'unprefixedicons',
+          appendCodepoints: true
+        });
+        s.pipe(es.through(function(file) {
+            assert.equal(file.path,'bibabelula.foo');
+            assert(file.contents instanceof Stream.PassThrough);
+          }, function() {
+              done();
+          }));
+        s.write(new gutil.File({
+          path: 'bibabelula.foo',
+          contents: new Stream.PassThrough('ohyeah')
+        }));
+        s.end();
+
+    });
+
   });
 
 
@@ -164,6 +185,26 @@ describe('gulp-svgicons2svgfont', function() {
             );
             done();
         });
+    });
+
+    it('should let non-svg files pass through', function(done) {
+
+        var s = svgicons2svgfont({
+          fontName: 'unprefixedicons',
+          appendCodepoints: true
+        });
+        s.pipe(es.through(function(file) {
+            assert.equal(file.path,'bibabelula.foo');
+            assert.equal(file.contents.toString('utf-8'), 'ohyeah');
+          }, function() {
+              done();
+          }));
+        s.write(new gutil.File({
+          path: 'bibabelula.foo',
+          contents: new Buffer('ohyeah')
+        }));
+        s.end();
+
     });
 
   });
