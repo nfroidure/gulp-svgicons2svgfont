@@ -27,11 +27,20 @@ module.exports = function(options) {
 
   // Collecting icons
   stream._transform = function bufferContents(file, unused, done) {
-    if(file.isNull()) return done(); // Do nothing
-    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) return done();
-    if(file.isBuffer() || file.isStream()) {
-      files.push(file);
+     // When null just pass through
+    if(file.isNull()) {
+      stream.push(file); done();
+      return;
     }
+
+    // If the ext doesn't match, pass it through
+    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) {
+      stream.push(file); done();
+      return;
+    }
+
+    files.push(file);
+
     done();
   };
 
@@ -39,7 +48,7 @@ module.exports = function(options) {
   stream._flush = function endStream(done) {
 
     // No icons, exit
-    if (files.length === 0) return this.emit('end');
+    if (files.length === 0) return done();
 
     // Wrap error function
     options.error = function() {
@@ -47,7 +56,7 @@ module.exports = function(options) {
         [].slice.call(arguments, 0).concat()));
     };
 
-    // Map each icons to their correspondinf glyphs
+    // Map each icons to their corresponding glyphs
     var glyphs = files.map(function(file) {
       // Creating an object for each icon
       var matches = Path.basename(file.path).match(/^(?:u([0-9a-f]{4})\-)?(.*).svg$/i)

@@ -13,7 +13,33 @@ describe('gulp-svgicons2svgfont', function() {
 
   afterEach(function() {
     rimraf.sync(__dirname + '/results');
-  })
+  });
+
+  describe('with null contents', function() {
+
+    it('should let null files pass through', function(done) {
+
+      var s = svgicons2svgfont({
+          fontName: 'cleanicons'
+        })
+        , n = 0;
+      s.pipe(es.through(function(file) {
+          assert.equal(file.path,'bibabelula.svg');
+          assert.equal(file.contents, null);
+          n++;
+        }, function() {
+          assert.equal(n,1);
+          done();
+        }));
+      s.write(new gutil.File({
+        path: 'bibabelula.svg',
+        contents: null
+      }));
+      s.end();
+
+    });
+
+  });
 
   describe('in stream mode', function() {
 
@@ -140,6 +166,28 @@ describe('gulp-svgicons2svgfont', function() {
 
     });
 
+    it('should let non-svg files pass through', function(done) {
+
+      var s = svgicons2svgfont({
+          fontName: 'unprefixedicons'
+        })
+        , n = 0;
+      s.pipe(es.through(function(file) {
+          assert.equal(file.path,'bibabelula.foo');
+          assert.equal(file.contents.toString('utf-8'), 'ohyeah');
+          n++;
+        }, function() {
+          assert.equal(n,1);
+          done();
+        }));
+      s.write(new gutil.File({
+        path: 'bibabelula.foo',
+        contents: new Buffer('ohyeah')
+      }));
+      s.end();
+
+    });
+
   });
 
 
@@ -204,6 +252,28 @@ describe('gulp-svgicons2svgfont', function() {
           contents: new Buffer('ohyeah')
         }));
         s.end();
+
+    });
+
+    it('should let non-svg files pass through', function(done) {
+
+      var s = svgicons2svgfont({
+          fontName: 'unprefixedicons'
+        })
+        , n = 0;
+      s.pipe(es.through(function(file) {
+          assert.equal(file.path,'bibabelula.foo');
+          assert(file.contents instanceof Stream.PassThrough);
+          n++;
+        }, function() {
+          assert.equal(n,1);
+          done();
+        }));
+      s.write(new gutil.File({
+        path: 'bibabelula.foo',
+        contents: new Stream.PassThrough()
+      }));
+      s.end();
 
     });
 
