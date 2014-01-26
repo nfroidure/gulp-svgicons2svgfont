@@ -20,15 +20,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nfroidure/gulp-svgicons2svgfont.git"
+    "url": "git://github.com/nfroidure/gulp-svgiconstosvgfont.git"
   },
   "bugs": {
-    "url": "https://github.com/nfroidure/gulp-svgicons2svgfont/issues"
+    "url": "https://github.com/nfroidure/gulp-svgiconstosvgfont/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/nfroidure/gulp-svgicons2svgfont/blob/master/LICENSE"
+      "url": "https://github.com/nfroidure/gulp-svgiconstosvgfont/blob/master/LICENSE"
     }
   ],
   "dependencies": {
