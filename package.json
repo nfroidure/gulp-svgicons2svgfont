@@ -43,7 +43,9 @@
     "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.7.1",
     "istanbul": "~0.2.4",
-    "gulp": "*",
-    "rimraf": "3.5.2"
+    "gulp": "~3.5.2",
+    "rimraf": "3.5.2",
+    "svgicons2svgfont": "0.0.5",
+    "gulp-util": "~2.2.14"
   }
 }
