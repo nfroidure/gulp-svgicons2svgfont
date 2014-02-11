@@ -44,6 +44,6 @@
     "coveralls": "~2.7.1",
     "istanbul": "~0.2.4",
     "gulp": "*",
-    "rimraf": "*"
+    "rimraf": "3.5.2"
   }
 }
