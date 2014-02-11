@@ -18,12 +18,18 @@ module.exports = function(options) {
   if (!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
   }
+
   options.log = function() {
     gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
       [].slice.call(arguments, 0).concat()));
   };
 
   var stream = new Stream.Transform({objectMode: true});
+
+  options.error = function() {
+    stream.emit('error', new PluginError('svgicons2svgfont',
+      [].slice.call(arguments, 0).concat()));
+  };
 
   // Collecting icons
   stream._transform = function bufferContents(file, unused, done) {
@@ -49,12 +55,6 @@ module.exports = function(options) {
 
     // No icons, exit
     if (files.length === 0) return done();
-
-    // Wrap error function
-    options.error = function() {
-      stream.emit('error', new PluginError('svgicons2svgfont',
-        [].slice.call(arguments, 0).concat()));
-    };
 
     // Map each icons to their corresponding glyphs
     var glyphs = files.map(function(file) {

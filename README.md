@@ -1,5 +1,7 @@
-# gulp-svgicons2svgfont [![NPM version](https://badge.fury.io/js/gulp-svgicons2svgfont.png)](https://npmjs.org/package/gulp-svgicons2svgfont) [![Build status](https://api.travis-ci.org/nfroidure/gulp-svgiconstosvgfont.png)](https://travis-ci.org/nfroidure/gulp-svgicons2svgfont)
+# gulp-svgicons2svgfont
 > Create an SVG font from several SVG icons with [Gulp](http://gulpjs.com/).
+
+[![NPM version](https://badge.fury.io/js/gulp-svgicons2svgfont.png)](https://npmjs.org/package/gulp-svgicons2svgfont) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-svgicons2svgfont.png)](https://travis-ci.org/nfroidure/gulp-svgicons2svgfont) [![Dependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont) [![devDependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont/dev-status.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/gulp-svgicons2svgfont/badge.png?branch=master)](https://coveralls.io/r/nfroidure/gulp-svgicons2svgfont?branch=master)
 
 ## Usage
 

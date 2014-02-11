@@ -4,7 +4,9 @@
   "description": "Create a SVG font from several SVG icons",
   "main": "src/index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha tests/*.mocha.js"
+    "test": "./node_modules/mocha/bin/mocha tests/*.mocha.js",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report html -- tests/*.mocha.js -R spec -t 5000"
   },
   "keywords": [
     "gulpplugin",
@@ -32,13 +34,16 @@
     }
   ],
   "dependencies": {
-    "gulp-util": "~2.2.0",
+    "gulp-util": "~2.2.14",
     "svgicons2svgfont": "0.0.5"
   },
   "devDependencies": {
-    "event-stream": "~3.0.20",
-    "mocha": "~1.16.2",
-    "gulp": "~3.2.1",
-    "rimraf": "~2.2.5"
+    "mocha": "~1.17.1",
+    "event-stream": "~3.1.0",
+    "mocha-lcov-reporter": "0.0.1",
+    "coveralls": "~2.7.1",
+    "istanbul": "~0.2.4",
+    "gulp": "*",
+    "rimraf": "*"
   }
 }

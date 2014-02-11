@@ -354,4 +354,13 @@ describe('gulp-svgicons2svgfont', function() {
   });
 
 
+  describe('must throw error when not fontname', function() {
+
+    assert.throws(function() {
+      svgicons2svgfont();
+    });
+
+  });
+
+
 });
