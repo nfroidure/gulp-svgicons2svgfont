@@ -115,6 +115,14 @@ module.exports = function(options) {
     // Running the parent library
     joinedFile.contents = svgicons2svgfont(glyphs, options);
 
+    // Emit event containing codepoint mapping
+    stream.emit('codepoints', glyphs.map(function(glyph) {
+      return {
+        name: glyph.name,
+        codepoint: glyph.codepoint
+      };
+    }));
+
     // Giving the font back to the stream
     if(files[0].isBuffer()) {
       var buf = new Buffer('');
