@@ -188,6 +188,26 @@ describe('gulp-svgicons2svgfont', function() {
 
     });
 
+    it('should emit an event with the codepoint mapping', function(done) {
+      gulp.src(__dirname + '/fixtures/cleanicons/*.svg', {buffer: false})
+        .pipe(svgicons2svgfont({
+          fontName: 'cleanicons'
+        })).on('codepoints', function(codepoints) {
+          fs.mkdirSync(__dirname+'/results/');
+          fs.writeFileSync(__dirname+'/results/test-codepoints.json', JSON.stringify(codepoints));
+        }).on('data', function(file) {
+          assert.equal(file.isStream(), true);
+          file.pipe(es.wait(function(err, data) {
+            assert.equal(err, undefined);
+            assert.equal(
+              fs.readFileSync(__dirname+'/results/test-codepoints.json', 'utf8'),
+              fs.readFileSync(__dirname+'/expected/test-codepoints.json', 'utf8')
+            );
+            done();
+          }));
+        });
+    });
+
   });
 
 
