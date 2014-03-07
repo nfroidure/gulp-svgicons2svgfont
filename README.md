@@ -1,7 +1,7 @@
 # gulp-svgicons2svgfont
 > Create an SVG font from several SVG icons with [Gulp](http://gulpjs.com/).
 
-[![NPM version](https://badge.fury.io/js/gulp-svgicons2svgfont.png)](https://npmjs.org/package/gulp-svgicons2svgfont) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-svgicons2svgfont.png)](https://travis-ci.org/nfroidure/gulp-svgicons2svgfont) [![Dependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont) [![devDependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont/dev-status.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/gulp-svgicons2svgfont/badge.png?branch=master)](https://coveralls.io/r/nfroidure/gulp-svgicons2svgfont?branch=master)
+[![NPM version](https://badge.fury.io/js/gulp-svgicons2svgfont.png)](https://npmjs.org/package/gulp-svgicons2svgfont) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-svgicons2svgfont.png)](https://travis-ci.org/nfroidure/gulp-svgicons2svgfont) [![Dependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont) [![devDependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont/dev-status.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/gulp-svgicons2svgfont/badge.png?branch=master)](https://coveralls.io/r/nfroidure/gulp-svgicons2svgfont?branch=master) [![Code Climate](https://codeclimate.com/github/nfroidure/gulp-svgicons2svgfont.png)](https://codeclimate.com/github/nfroidure/gulp-svgicons2svgfont)
 
 ## Usage
 
@@ -21,6 +21,10 @@ gulp.task('Iconfont', function(){
     .pipe(svgicons2svgfont({
       fontName: 'myfont'
      }))
+    .on('codepoints', function(codepoints) {
+      console.log(codepoints);
+      // Here generate CSS/SCSS  for your codepoints ...
+    })
     .pipe(gulp.dest('www/font/'));
 });
 ```
@@ -30,6 +34,9 @@ Every icon must be prefixed with it's codepoint. The `appendCodepoints` option
  the corresponding codepoint to display your icon. See this
  [sample less mixin](https://github.com/ChtiJS/chtijs.francejs.org/blob/master/documents/less/_icons.less)
  for a real world usage.
+
+The plugin stream emits a `codepoints` event letting you do whatever you want
+ with them.
 
 ## API
 
@@ -64,7 +71,8 @@ The ascent formula is : ascent = fontHeight - descent.
 Type: `Boolean`
 Default value: `false`
 
-Allow to append codepoints to icon files in order to always keep the same codepoints.
+Allow to append codepoints to icon files in order to always keep the same
+ codepoints.
 
 #### options.ignoreExt
 Type: `Boolean`
