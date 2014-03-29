@@ -38,6 +38,9 @@ Every icon must be prefixed with it's codepoint. The `appendCodepoints` option
 The plugin stream emits a `codepoints` event letting you do whatever you want
  with them.
 
+Please report icons to font issues to the `svgicons2svgfont` repository on wich
+ this plugin depends.
+
 ## API
 
 ### svgicons2svgfont(options)
@@ -79,3 +82,9 @@ Type: `Boolean`
 Default value: `false`
 
 Set to true to also convert read icons that doesn't have the .svg extension.
+
+## Stats
+
+[![NPM](https://nodei.co/npm/gulp-svgicons2svgfont.png?downloads=true&stars=true)](https://nodei.co/npm/gulp-svgicons2svgfont/)
+[![NPM](https://nodei.co/npm-dl/gulp-svgicons2svgfont.png)](https://nodei.co/npm/gulp-svgicons2svgfont/)
+
