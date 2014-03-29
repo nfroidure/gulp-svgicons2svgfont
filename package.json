@@ -35,7 +35,8 @@
   ],
   "dependencies": {
     "gulp-util": "~2.2.14",
-    "svgicons2svgfont": "0.0.9"
+    "svgicons2svgfont": "0.0.9",
+    "readable-stream": "^1.0.26-2"
   },
   "devDependencies": {
     "mocha": "~1.17.1",

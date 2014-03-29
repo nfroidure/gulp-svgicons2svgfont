@@ -1,7 +1,7 @@
 var svgicons2svgfont = require('svgicons2svgfont')
   , Path = require('path')
   , gutil = require('gulp-util')
-  , Stream = require('stream')
+  , Stream = require('readable-stream')
   , Fs = require('fs')
   , path = require('path')
 ;
