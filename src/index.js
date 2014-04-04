@@ -99,12 +99,6 @@ module.exports = function(options) {
       return glyph;
     });
 
-    glyphs.forEach(function(glyph){
-      glyph.stream.on('end', function() {
-        
-      });
-    });
-
     // Create the font file
     var joinedFile = new gutil.File({
       cwd: files[0].cwd,
@@ -119,7 +113,8 @@ module.exports = function(options) {
     stream.emit('codepoints', glyphs.map(function(glyph) {
       return {
         name: glyph.name,
-        codepoint: glyph.codepoint
+        codepoint: glyph.codepoint,
+        codepointHex: glyph.codepoint.toString(16).toUpperCase()
       };
     }));
 
