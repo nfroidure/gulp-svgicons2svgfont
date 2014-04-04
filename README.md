@@ -21,10 +21,11 @@ gulp.task('Iconfont', function(){
     .pipe(svgicons2svgfont({
       fontName: 'myfont'
      }))
-    .on('codepoints', function(codepoints) {
-      console.log(codepoints);
-      // Here generate CSS/SCSS  for your codepoints ...
-    })
+        .on('codepoints', function(codepoints) {
+          console.log(codepoints);
+          // Generate CSS/SCSS for your codepoints
+          // Codepoints is an array of objects, each item has the properties "name", "codepoint" and "codepointHex"
+        })
     .pipe(gulp.dest('www/font/'));
 });
 ```
