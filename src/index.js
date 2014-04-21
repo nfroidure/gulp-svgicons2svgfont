@@ -19,14 +19,14 @@ module.exports = function(options) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
   }
 
-  options.log = function() {
+  options.log = options.log || function() {
     gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
       [].slice.call(arguments, 0).concat()));
   };
 
   var stream = new Stream.Transform({objectMode: true});
 
-  options.error = function() {
+  options.error = options.error || function() {
     stream.emit('error', new PluginError('svgicons2svgfont',
       [].slice.call(arguments, 0).concat()));
   };
