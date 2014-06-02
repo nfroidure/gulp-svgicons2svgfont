@@ -1,6 +1,6 @@
 {
   "name": "gulp-svgicons2svgfont",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Create a SVG font from several SVG icons",
   "main": "src/index.js",
   "scripts": {
@@ -34,19 +34,19 @@
     }
   ],
   "dependencies": {
-    "gulp-util": "~2.2.14",
-    "svgicons2svgfont": "0.0.11",
-    "readable-stream": "^1.0.26-4"
+    "gulp-util": "~2.2.15",
+    "svgicons2svgfont": "0.0.12",
+    "readable-stream": "^1.0.27-1"
   },
   "devDependencies": {
-    "mocha": "~1.18.2",
-    "event-stream": "~3.1.1",
+    "mocha": "~1.20.0",
+    "event-stream": "~3.1.5",
     "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.10.0",
-    "istanbul": "~0.2.7",
-    "gulp": "~3.6.0",
-    "rimraf": "2.2.6",
-    "svgicons2svgfont": "0.0.11",
-    "gulp-util": "~2.2.14"
+    "istanbul": "~0.2.10",
+    "gulp": "~3.7.0",
+    "rimraf": "2.2.8",
+    "svgicons2svgfont": "0.0.12",
+    "gulp-util": "~2.2.15"
   }
 }
