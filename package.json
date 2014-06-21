@@ -34,19 +34,19 @@
     }
   ],
   "dependencies": {
-    "gulp-util": "~2.2.15",
+    "gulp-util": "~2.2.17",
     "svgicons2svgfont": "0.0.12",
     "readable-stream": "^1.0.27-1"
   },
   "devDependencies": {
-    "mocha": "~1.20.0",
+    "mocha": "~1.20.1",
     "event-stream": "~3.1.5",
     "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.10.0",
-    "istanbul": "~0.2.10",
-    "gulp": "~3.7.0",
+    "istanbul": "~0.2.11",
+    "gulp": "~3.8.1",
     "rimraf": "2.2.8",
     "svgicons2svgfont": "0.0.12",
-    "gulp-util": "~2.2.15"
+    "gulp-util": "~2.2.17"
   }
 }
