@@ -3,6 +3,9 @@
 
 [![NPM version](https://badge.fury.io/js/gulp-svgicons2svgfont.png)](https://npmjs.org/package/gulp-svgicons2svgfont) [![Build status](https://secure.travis-ci.org/nfroidure/gulp-svgicons2svgfont.png)](https://travis-ci.org/nfroidure/gulp-svgicons2svgfont) [![Dependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont) [![devDependency Status](https://david-dm.org/nfroidure/gulp-svgicons2svgfont/dev-status.png)](https://david-dm.org/nfroidure/gulp-svgicons2svgfont#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/gulp-svgicons2svgfont/badge.png?branch=master)](https://coveralls.io/r/nfroidure/gulp-svgicons2svgfont?branch=master) [![Code Climate](https://codeclimate.com/github/nfroidure/gulp-svgicons2svgfont.png)](https://codeclimate.com/github/nfroidure/gulp-svgicons2svgfont)
 
+You can test this library with the
+ [frontend generator](http://nfroidure.github.io/svgiconfont/).
+
 ## Usage
 
 First, install `gulp-svgicons2svgfont` as a development dependency:
@@ -76,4 +79,7 @@ The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2sv
 
 [![NPM](https://nodei.co/npm/gulp-svgicons2svgfont.png?downloads=true&stars=true)](https://nodei.co/npm/gulp-svgicons2svgfont/)
 [![NPM](https://nodei.co/npm-dl/gulp-svgicons2svgfont.png)](https://nodei.co/npm/gulp-svgicons2svgfont/)
+
+## Contributing
+Feel free to push your code if you agree with publishing under the MIT license.
 
