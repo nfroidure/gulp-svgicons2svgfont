@@ -38,37 +38,21 @@ Every icon must be prefixed with it's codepoint. The `appendCodepoints` option
 The plugin stream emits a `codepoints` event letting you do whatever you want
  with them.
 
-Please report icons to font issues to the `svgicons2svgfont` repository on wich
- this plugin depends.
+Please report icons to font issues to the
+ [svgicons2svgfont](https://github.com/nfroidure/svgicons2svgfont) repository
+ on wich this plugin depends.
 
 ## API
 
 ### svgicons2svgfont(options)
 
-#### options.fontName
-Type: `String`
-Default value: `'iconfont'`
-
-A string value that is used to name your font-family (required).
-
-#### options.fixedWidth
+#### options.ignoreExt
 Type: `Boolean`
 Default value: `false`
 
-Creates a monospace font of the width of the largest input icon.
+Set to true to also convert read icons that doesn't have the .svg extension.
 
-#### options.fontHeight
-Type: `Number`
-
-The ouputted font height (defaults to the height of the highest input icon).
-
-#### options.descent
-Type: `Number`
-Default value: `0`
-
-The font descent. It is usefull to fix the font baseline yourself.
-
-The ascent formula is : ascent = fontHeight - descent.
+A string value that is used to name your font-family (required).
 
 #### options.appendCodepoints
 Type: `Boolean`
@@ -77,18 +61,16 @@ Default value: `false`
 Allow to append codepoints to icon files in order to always keep the same
  codepoints.
 
-#### options.ignoreExt
-Type: `Boolean`
-Default value: `false`
-
-Set to true to also convert read icons that doesn't have the .svg extension.
-
-#### options.log
-Type: `Function`
-Default value: `false`
-
-Allows you to provide your own logging function. Set to `function(){}` to
- impeach logging.
+#### options.*
+The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
+ options are also available:
+* options.fontName
+* options.fixedWidth
+* options.centerHorizontally
+* options.normalize
+* options.fontHeight
+* options.descent
+* options.log
 
 ## Stats
 
