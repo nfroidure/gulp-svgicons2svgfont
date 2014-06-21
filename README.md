@@ -83,6 +83,13 @@ Default value: `false`
 
 Set to true to also convert read icons that doesn't have the .svg extension.
 
+#### options.log
+Type: `Function`
+Default value: `false`
+
+Allows you to provide your own logging function. Set to `function(){}` to
+ impeach logging.
+
 ## Stats
 
 [![NPM](https://nodei.co/npm/gulp-svgicons2svgfont.png?downloads=true&stars=true)](https://nodei.co/npm/gulp-svgicons2svgfont/)
