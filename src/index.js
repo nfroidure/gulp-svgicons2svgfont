@@ -19,7 +19,7 @@ module.exports = function(options) {
   }
 
   options.log = options.log || function() {
-    gutil.log.apply(gutil, ['gulp-svgicons2svgfont: '].concat(
+    gutil.log.apply(gutil, ['gulp-svgicons2svgfont:'].concat(
       [].slice.call(arguments, 0).concat()));
   };
 
