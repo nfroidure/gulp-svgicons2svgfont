@@ -58,7 +58,7 @@ module.exports = function(options) {
     // Map each icons to their corresponding glyphs
     var glyphs = files.map(function(file) {
       // Creating an object for each icon
-      var matches = path.basename(file.path).match(/^(?:u([0-9a-f]{4})\-)?(.*).svg$/i)
+      var matches = path.basename(file.path).match(/^(?:u([0-9a-f]{4,6})\-)?(.*).svg$/i)
         , glyph = {
           name: matches[2],
           codepoint: 0,
