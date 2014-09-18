@@ -8,11 +8,12 @@ var svgicons2svgfont = require('svgicons2svgfont')
 module.exports = function(options) {
   var files = []
     , usedCodePoints = []
-    , curCodepoint = 0xE001
+    , curCodepoint
   ;
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
+  curCodepoint = options.startCodepoint ||  0xE001;
 
   if(!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
