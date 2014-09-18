@@ -64,6 +64,12 @@ Default value: `false`
 Allow to append codepoints to icon files in order to always keep the same
  codepoints.
 
+#### options.startCodepoint
+Type: `integer`
+Default value: `0xE001`
+
+Starting codepoint used for the generated glyphs. Defaults to the start of the Unicode private use area.
+
 #### options.*
 The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
  options are also available:
