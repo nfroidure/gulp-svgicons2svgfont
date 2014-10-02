@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "gulp-util": "~3.0.1",
-    "svgicons2svgfont": "0.1.1",
+    "svgicons2svgfont": "0.2.0",
     "readable-stream": "^1.0.32"
   },
   "devDependencies": {
