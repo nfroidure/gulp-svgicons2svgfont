@@ -248,7 +248,9 @@ describe('gulp-svgicons2svgfont', function() {
             assert.equal(file.isBuffer(), true);
             assert.equal(
               file.contents.toString('utf8'),
-              fs.readFileSync(__dirname + '/expected/test-originalicons-font.svg')
+              fs.readFileSync(__dirname + '/expected/test-originalicons-font.svg', {
+                encoding: 'utf8'
+              })
             );
             done();
         });
@@ -316,8 +318,6 @@ describe('gulp-svgicons2svgfont', function() {
                 encoding: 'utf-8'
               })
             );
-            fs.unlinkSync(__dirname + '/results/cleanicons.svg');
-            fs.rmdirSync(__dirname + '/results/');
             done();
         });
     });
