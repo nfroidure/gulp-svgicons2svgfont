@@ -35,18 +35,18 @@
   ],
   "dependencies": {
     "gulp-util": "~3.0.1",
-    "svgicons2svgfont": "0.2.0",
-    "readable-stream": "^1.0.32"
+    "svgicons2svgfont": "1.0.0",
+    "readable-stream": "^1.0.33"
   },
   "devDependencies": {
-    "mocha": "~1.21.4",
+    "mocha": "~2.0.1",
     "event-stream": "~3.1.7",
     "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.11.2",
     "istanbul": "~0.3.2",
-    "gulp": "~3.8.8",
+    "gulp": "~3.8.10",
     "rimraf": "2.2.8",
-    "svgicons2svgfont": "0.2.0",
+    "svgicons2svgfont": "1.0.0",
     "gulp-util": "~3.0.1"
   }
 }
