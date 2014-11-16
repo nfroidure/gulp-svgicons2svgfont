@@ -1,6 +1,6 @@
 {
   "name": "gulp-svgicons2svgfont",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Create a SVG font from several SVG icons",
   "main": "src/index.js",
   "scripts": {
