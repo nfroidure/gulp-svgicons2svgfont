@@ -24,10 +24,6 @@ gulp.task('Iconfont', function(){
     .pipe(svgicons2svgfont({
       fontName: 'myfont'
      }))
-    .on('codepoints', function(codepoints) {
-      console.log(codepoints);
-      // Here generate CSS/SCSS  for your codepoints ...
-    })
     .pipe(gulp.dest('www/font/'));
 });
 ```
@@ -38,8 +34,7 @@ Every icon must be prefixed with it's codepoint. The `appendCodepoints` option
  [sample less mixin](https://github.com/ChtiJS/chtijs.francejs.org/blob/master/documents/less/_icons.less)
  for a real world usage.
 
-The plugin stream emits a `codepoints` event letting you do whatever you want
- with them.
+The plugin stream emits a `codepoints` event (see below) letting you do whatever you want with them.
 
 Please report icons to font issues to the
  [svgicons2svgfont](https://github.com/nfroidure/svgicons2svgfont) repository
@@ -81,6 +76,30 @@ The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2sv
 * options.round
 * options.descent
 * options.log
+
+### Events
+
+#### `codepoints`
+
+Emitted when the list of codepoints is known. Good entry point for auto-generating CSS or similar.
+
+Example usage:
+
+    .on('codepoints', function(codepoints) {
+      console.log(codepoints);
+      // Here generate CSS/SCSS  for your codepoints ...
+    })
+
+
+#### `glyph`
+
+Emitted when a glyp has been identified. Handle this event to change glyph options such as modifying the name or adding ligatures.
+
+Example usage:
+
+    .on('glyph', function(glyph) {
+      glyph.ligatures = [glyph.name];
+    })
 
 ## Stats
 

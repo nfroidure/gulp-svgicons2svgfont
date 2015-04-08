@@ -70,6 +70,7 @@ module.exports = function(options) {
         glyph.codepoint = parseInt(matches[1], 16);
         usedCodePoints.push(glyph.codepoint);
       }
+      stream.emit('glyph', glyph);
       return glyph;
     }).map(function(glyph) {
       if(0 === glyph.codepoint) {
