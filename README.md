@@ -82,6 +82,12 @@ The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2sv
 * options.descent
 * options.log
 
+### Note
+
+You may look after a full Gulp web font workflow, see
+ [gulp-iconfont](https://github.com/nfroidure/gulp-iconfont)
+  fot that matter.
+
 ## Stats
 
 [![NPM](https://nodei.co/npm/gulp-svgicons2svgfont.png?downloads=true&stars=true)](https://nodei.co/npm/gulp-svgicons2svgfont/)
