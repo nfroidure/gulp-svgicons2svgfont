@@ -84,7 +84,7 @@ module.exports = function(options) {
               function(err) {
                 if(err) {
                   gutil.log('Could not save codepoint: '
-                    + 'u' + i.toString(16).toUpperCase()
+                    + 'u' + glyph.codepoint.toString(16).toUpperCase()
                     +' for ' + glyph.name + '.svg');
                 } else {
                   gutil.log('Saved codepoint: '
