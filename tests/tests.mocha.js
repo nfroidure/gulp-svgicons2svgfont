@@ -1,13 +1,11 @@
-var fs = require('fs')
-  , gulp = require('gulp')
-  , gutil = require('gulp-util')
-  , es = require('event-stream')
-  , svgicons2svgfont = require('../src/index')
-  , assert = require('assert')
-  , rimraf = require('rimraf')
-  , Stream = require('stream')
-;
-
+var fs = require('fs');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var es = require('event-stream');
+var svgicons2svgfont = require('../src/index');
+var assert = require('assert');
+var rimraf = require('rimraf');
+var Stream = require('stream');
 
 describe('gulp-svgicons2svgfont', function() {
 
@@ -20,9 +18,9 @@ describe('gulp-svgicons2svgfont', function() {
     it('should let null files pass through', function(done) {
 
       var s = svgicons2svgfont({
-          fontName: 'cleanicons'
-        })
-        , n = 0;
+        fontName: 'cleanicons'
+      });
+      var n = 0;
       s.pipe(es.through(function(file) {
           assert.equal(file.path,'bibabelula.svg');
           assert.equal(file.contents, null);
@@ -113,8 +111,8 @@ describe('gulp-svgicons2svgfont', function() {
             })
             .pipe(gulp.dest(__dirname + '/results/'))
             .on('end', function() {
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE001-arrow-down.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE001-arrow-down.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-down.svg', 'utf8')

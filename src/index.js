@@ -1,15 +1,13 @@
-var svgicons2svgfont = require('svgicons2svgfont')
-  , gutil = require('gulp-util')
-  , Stream = require('readable-stream')
-  , Fs = require('fs')
-  , path = require('path')
-;
+var svgicons2svgfont = require('svgicons2svgfont');
+var gutil = require('gulp-util');
+var Stream = require('readable-stream');
+var Fs = require('fs');
+var path = require('path');
 
 module.exports = function(options) {
-  var files = []
-    , usedCodePoints = []
-    , curCodepoint
-  ;
+  var files = [];
+  var usedCodePoints = [];
+  var curCodepoint;
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
@@ -59,13 +57,14 @@ module.exports = function(options) {
     // Map each icons to their corresponding glyphs
     var glyphs = files.map(function(file) {
       // Creating an object for each icon
-      var matches = path.basename(file.path).match(/^(?:u([0-9a-f]{4,6})\-)?(.*).svg$/i)
-        , glyph = {
-          name: matches[2],
-          codepoint: 0,
-          file: file.path,
-          stream: file.pipe(new Stream.PassThrough())
-        };
+      var matches = path.basename(file.path)
+        .match(/^(?:u([0-9a-f]{4,6})\-)?(.*).svg$/i);
+      var glyph = {
+        name: matches[2],
+        codepoint: 0,
+        file: file.path,
+        stream: file.pipe(new Stream.PassThrough())
+      };
       if(matches && matches[1]) {
         glyph.codepoint = parseInt(matches[1], 16);
         usedCodePoints.push(glyph.codepoint);
@@ -78,21 +77,21 @@ module.exports = function(options) {
         } while(-1 !== usedCodePoints.indexOf(glyph.codepoint));
         usedCodePoints.push(glyph.codepoint);
         if(options.appendCodepoints) {
-            Fs.rename(glyph.file, path.dirname(glyph.file) + '/'
-              + 'u' + glyph.codepoint.toString(16).toUpperCase()
-              + '-' + glyph.name + '.svg',
-              function(err) {
-                if(err) {
-                  gutil.log('Could not save codepoint: '
-                    + 'u' + glyph.codepoint.toString(16).toUpperCase()
-                    +' for ' + glyph.name + '.svg');
-                } else {
-                  gutil.log('Saved codepoint: '
-                    + 'u' + glyph.codepoint.toString(16).toUpperCase()
-                    +' for ' + glyph.name + '.svg');
-                }
+          Fs.rename(glyph.file, path.dirname(glyph.file) + '/' +
+            'u' + glyph.codepoint.toString(16).toUpperCase() +
+            '-' + glyph.name + '.svg',
+            function(err) {
+              if(err) {
+                gutil.log('Could not save codepoint: ' +
+                  'u' + glyph.codepoint.toString(16).toUpperCase() +
+                  ' for ' + glyph.name + '.svg');
+              } else {
+                gutil.log('Saved codepoint: ' +
+                  'u' + glyph.codepoint.toString(16).toUpperCase() +
+                  ' for ' + glyph.name + '.svg');
               }
-            );
+            }
+          );
         }
       }
       return glyph;
