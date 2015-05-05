@@ -117,20 +117,20 @@ describe('gulp-svgicons2svgfont', function() {
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-down.svg', 'utf8')
               );
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE002-arrow-left.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE002-arrow-left.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE002-arrow-left.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-left.svg', 'utf8')
               );
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE003-arrow-right.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE003-arrow-right.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE003-arrow-right.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-right.svg', 'utf8')
               );
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE004-arrow-up.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE004-arrow-up.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-up.svg', 'utf8')
@@ -167,9 +167,9 @@ describe('gulp-svgicons2svgfont', function() {
     it('should let non-svg files pass through', function(done) {
 
       var s = svgicons2svgfont({
-          fontName: 'unprefixedicons'
-        })
-        , n = 0;
+        fontName: 'unprefixedicons'
+      });
+      var n = 0;
       s.pipe(es.through(function(file) {
           assert.equal(file.path,'bibabelula.foo');
           assert.equal(file.contents.toString('utf-8'), 'ohyeah');
@@ -277,9 +277,9 @@ describe('gulp-svgicons2svgfont', function() {
     it('should let non-svg files pass through', function(done) {
 
       var s = svgicons2svgfont({
-          fontName: 'unprefixedicons'
-        })
-        , n = 0;
+        fontName: 'unprefixedicons'
+      });
+      var n = 0;
       s.pipe(es.through(function(file) {
           assert.equal(file.path,'bibabelula.foo');
           assert(file.contents instanceof Stream.PassThrough);
@@ -331,26 +331,26 @@ describe('gulp-svgicons2svgfont', function() {
             }))
             .pipe(gulp.dest(__dirname + '/results/'))
             .on('data', function(file) {
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE001-arrow-down.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE001-arrow-down.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE001-arrow-down.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-down.svg', 'utf8')
               );
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE002-arrow-left.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE002-arrow-left.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE002-arrow-left.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-left.svg', 'utf8')
               );
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE003-arrow-right.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE003-arrow-right.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE003-arrow-right.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-right.svg', 'utf8')
               );
-              assert.equal(fs.existsSync(__dirname
-                + '/results/unprefixedicons/uE004-arrow-up.svg'), true);
+              assert.equal(fs.existsSync(__dirname +
+                '/results/unprefixedicons/uE004-arrow-up.svg'), true);
               assert.equal(
                 fs.readFileSync(__dirname + '/results/unprefixedicons/uE004-arrow-up.svg', 'utf8'),
                 fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-up.svg', 'utf8')
