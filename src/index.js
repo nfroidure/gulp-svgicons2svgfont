@@ -11,7 +11,7 @@ module.exports = function(options) {
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
-  curCodepoint = options.startCodepoint ||  0xE001;
+  curCodepoint = options.startCodepoint ||  0xEA01;
 
   if(!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');

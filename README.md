@@ -66,7 +66,7 @@ Allow to append codepoints to icon files in order to always keep the same
 
 #### options.startCodepoint
 Type: `integer`
-Default value: `0xE001`
+Default value: `0xEA01`
 
 Starting codepoint used for the generated glyphs. Defaults to the start of the Unicode private use area.
 
