@@ -29,7 +29,7 @@ module.exports = function(options) {
     stream.emit('codepoints', glyphs.map(function(glyph) {
       return {
         name: glyph.name,
-        codepoint: glyph.unicode.charCodeAt(0)
+        unicode: glyph.unicode
       };
     }));
   };
