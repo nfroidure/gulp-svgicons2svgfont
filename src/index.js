@@ -7,13 +7,13 @@ var plexer = require('plexer');
 
 module.exports = function(options) {
   var files = [];
-  var usedCodePoints = [];
-  var curCodepoint;
   var firstFile = null;
+  var metadata;
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
-  curCodepoint = options.startCodepoint ||  0xE001;
+  options.startUnicode = options.startUnicode ||  0xEA01;
+  options.appendUnicode = !!options.appendUnicode;
 
   if(!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
@@ -26,7 +26,7 @@ module.exports = function(options) {
 
   // Emit event containing codepoint mapping
   options.callback = function(glyphs) {
-    stream.emit('codepoints', glyphs.map(function(glyph) {
+    stream.emit('glyphs', glyphs.map(function(glyph) {
       return {
         name: glyph.name,
         unicode: glyph.unicode
@@ -43,6 +43,11 @@ module.exports = function(options) {
       [].slice.call(arguments, 0).concat()));
   };
 
+  metadata = require('svgicons2svgfont/src/metadata')({
+    startUnicode: options.startUnicode,
+    appendUnicode: options.appendUnicode
+  });
+
   inputStream._transform  = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
     // When null just pass through
     if(file.isNull()) {
@@ -54,45 +59,6 @@ module.exports = function(options) {
     if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) {
       outputStream.write(file); done();
       return;
-    }
-
-    // Wrap icons for the underlying lib
-    var matches = path.basename(file.path)
-      .match(/^(?:((?:u[0-9a-f]{4,6},?)+)\-)?(.*).svg$/i);
-    var metadata = {
-      name: matches[2],
-      unicode: ''
-    };
-    if(matches && matches[1]) {
-      metadata.unicode = matches[1].split(',').map(function(match) {
-        match = match.substr(1);
-        return match.split('u').map(function(code) {
-          return String.fromCharCode(parseInt(code, 16));
-        }).join('');
-      });
-      usedCodePoints = usedCodePoints.concat(metadata.unicode);
-    } else {
-      do {
-        metadata.unicode = String.fromCharCode(curCodepoint++);
-      } while(-1 !== usedCodePoints.indexOf(metadata.unicode));
-      usedCodePoints.push(metadata.unicode);
-      if(options.appendCodepoints) {
-        Fs.rename(file.path, path.dirname(file.path) + '/' +
-          'u' + metadata.unicode.charCodeAt(0).toString(16).toUpperCase() +
-          '-' + metadata.name + '.svg',
-          function(err) {
-            if(err) {
-              gutil.log('Could not save codepoint: ' +
-                'u' + metadata.unicode.charCodeAt(0).toString(16).toUpperCase() +
-                ' for ' + metadata.name + '.svg');
-            } else {
-              gutil.log('Saved codepoint: ' +
-                'u' + metadata.unicode.charCodeAt(0).toString(16).toUpperCase() +
-                ' for ' + metadata.name + '.svg');
-            }
-          }
-        );
-      }
     }
 
     // Generating the font
@@ -125,6 +91,8 @@ module.exports = function(options) {
         });
       }
     }
+
+    // Wrap icons for the underlying lib
     var iconStream;
     if(file.isBuffer()) {
       iconStream = new Stream.PassThrough();
@@ -135,7 +103,7 @@ module.exports = function(options) {
     } else {
       iconStream = file.contents;
     }
-    iconStream.metadata = metadata;
+    iconStream.metadata = metadata(file.path);
     fontStream.write(iconStream);
 
     done();

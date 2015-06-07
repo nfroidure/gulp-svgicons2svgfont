@@ -24,9 +24,9 @@ gulp.task('Iconfont', function(){
     .pipe(svgicons2svgfont({
       fontName: 'myfont'
      }))
-    .on('codepoints', function(codepoints) {
-      console.log(codepoints);
-      // Here generate CSS/SCSS  for your codepoints ...
+    .on('glyphs', function(glyphs) {
+      console.log(glyphs);
+      // Here generate CSS/SCSS  for your glyphs ...
     })
     .pipe(gulp.dest('www/font/'));
 });
@@ -43,7 +43,8 @@ The plugin stream emits a `codepoints` event letting you do whatever you want
 
 Please report icons to font issues to the
  [svgicons2svgfont](https://github.com/nfroidure/svgicons2svgfont) repository
- on wich this plugin depends.
+ on wich this plugin depends. Note this Gulp plugin is strictly equivalent to
+ the above module [CLI interface](https://github.com/nfroidure/svgicons2svgfont).
 
 ## API
 
@@ -57,16 +58,16 @@ Set to true to also convert read icons that doesn't have the .svg extension.
 
 A string value that is used to name your font-family (required).
 
-#### options.appendCodepoints
+#### options.appendUnicode
 Type: `Boolean`
 Default value: `false`
 
-Allow to append codepoints to icon files in order to always keep the same
- codepoints.
+Allow to append unicode codepoints to icon files in order to always keep the
+ same codepoints on each run.
 
-#### options.startCodepoint
+#### options.startUnicode
 Type: `integer`
-Default value: `0xE001`
+Default value: `0xEA01`
 
 Starting codepoint used for the generated glyphs. Defaults to the start of the Unicode private use area.
 

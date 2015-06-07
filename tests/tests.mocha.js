@@ -6,6 +6,7 @@ var svgicons2svgfont = require('../src/index');
 var assert = require('assert');
 var rimraf = require('rimraf');
 var Stream = require('stream');
+var neatequal = require('neatequal');
 
 describe('gulp-svgicons2svgfont', function() {
 
@@ -44,7 +45,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with cleanicons', function(done) {
       gulp.src(__dirname + '/fixtures/cleanicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
-          fontName: 'cleanicons'
+          fontName: 'cleanicons',
+          startUnicode: 0xE001
         })).on('data', function(file) {
           assert.equal(file.isStream(), true);
           file.pipe(es.wait(function(err, data) {
@@ -61,7 +63,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with prefixedicons', function(done) {
       gulp.src(__dirname + '/fixtures/prefixedicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
-          fontName: 'prefixedicons'
+          fontName: 'prefixedicons',
+          startUnicode: 0xE001
         })).on('data', function(file) {
           assert.equal(file.isStream(), true);
           file.pipe(es.wait(function(err, data) {
@@ -78,7 +81,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with originalicons', function(done) {
       gulp.src(__dirname + '/fixtures/originalicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
-          fontName: 'originalicons'
+          fontName: 'originalicons',
+          startUnicode: 0xE001
         })).on('data', function(file) {
           assert.equal(file.isStream(), true);
           file.pipe(es.wait(function(err, data) {
@@ -100,7 +104,8 @@ describe('gulp-svgicons2svgfont', function() {
           gulp.src(__dirname + '/results/unprefixedicons/*.svg', {buffer: false})
             .pipe(svgicons2svgfont({
               fontName: 'unprefixedicons',
-              appendCodepoints: true
+              startUnicode: 0xE001,
+              appendUnicode: true
             }))
             .on('data', function(file) {
               assert.equal(file.isStream(), true);
@@ -148,7 +153,8 @@ describe('gulp-svgicons2svgfont', function() {
 
         var s = svgicons2svgfont({
           fontName: 'unprefixedicons',
-          appendCodepoints: true
+          startUnicode: 0xE001,
+          appendUnicode: true
         });
         s.pipe(es.through(function(file) {
             assert.equal(file.path,'bibabelula.foo');
@@ -167,7 +173,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should let non-svg files pass through', function(done) {
 
       var s = svgicons2svgfont({
-        fontName: 'unprefixedicons'
+        fontName: 'unprefixedicons',
+        startUnicode: 0xE001
       });
       var n = 0;
       s.pipe(es.through(function(file) {
@@ -190,16 +197,20 @@ describe('gulp-svgicons2svgfont', function() {
       var codepoints;
       gulp.src(__dirname + '/fixtures/cleanicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
-          fontName: 'cleanicons'
-        })).on('codepoints', function(cpts) {
+          fontName: 'cleanicons',
+          startUnicode: 0xE001
+        })).on('glyphs', function(cpts) {
           codepoints = cpts;
         }).on('data', function(file) {
           assert.equal(file.isStream(), true);
           file.pipe(es.wait(function(err, data) {
             assert.equal(err, undefined);
-            assert.deepEqual(
-              codepoints, JSON.parse(fs.readFileSync(
-                __dirname + '/expected/test-codepoints.json', 'utf8')) );
+            neatequal(
+              codepoints,
+              JSON.parse(fs.readFileSync(
+                __dirname + '/expected/test-codepoints.json', 'utf8'
+              ))
+            );
             done();
           }));
         });
@@ -213,7 +224,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with cleanicons', function(done) {
       gulp.src('tests/fixtures/cleanicons/*.svg', {buffer: true})
         .pipe(svgicons2svgfont({
-          fontName: 'cleanicons'
+          fontName: 'cleanicons',
+          startUnicode: 0xE001
         })).on('data', function(file) {
             assert.equal(file.isBuffer(), true);
             assert.equal(
@@ -227,7 +239,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with prefixedicons', function(done) {
       gulp.src(__dirname + '/fixtures/prefixedicons/*.svg', {buffer: true})
         .pipe(svgicons2svgfont({
-          fontName: 'prefixedicons'
+          fontName: 'prefixedicons',
+          startUnicode: 0xE001
         })).on('data', function(file) {
             assert.equal(file.isBuffer(), true);
             assert.equal(
@@ -241,7 +254,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with originalicons', function(done) {
       gulp.src(__dirname + '/fixtures/originalicons/*.svg', {buffer: true})
         .pipe(svgicons2svgfont({
-          fontName: 'originalicons'
+          fontName: 'originalicons',
+          startUnicode: 0xE001
         })).on('data', function(file) {
             assert.equal(file.isBuffer(), true);
             assert.equal(
@@ -258,7 +272,8 @@ describe('gulp-svgicons2svgfont', function() {
 
         var s = svgicons2svgfont({
           fontName: 'unprefixedicons',
-          appendCodepoints: true
+          startUnicode: 0xE001,
+          appendUnicode: true
         });
         s.pipe(es.through(function(file) {
             assert.equal(file.path,'bibabelula.foo');
@@ -277,7 +292,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should let non-svg files pass through', function(done) {
 
       var s = svgicons2svgfont({
-        fontName: 'unprefixedicons'
+        fontName: 'unprefixedicons',
+          startUnicode: 0xE001
       });
       var n = 0;
       s.pipe(es.through(function(file) {
@@ -304,7 +320,8 @@ describe('gulp-svgicons2svgfont', function() {
     it('should work with cleanicons', function(done) {
       gulp.src(__dirname + '/fixtures/cleanicons/*.svg', {buffer: true})
         .pipe(svgicons2svgfont({
-          fontName: 'cleanicons'
+          fontName: 'cleanicons',
+          startUnicode: 0xE001
         }))
         .pipe(gulp.dest(__dirname + '/results/'))
         .on('end', function() {
@@ -321,16 +338,22 @@ describe('gulp-svgicons2svgfont', function() {
     });
 
     it('should work with unprefixed icons (stream)', function(done) {
+      var file;
       gulp.src(__dirname + '/fixtures/unprefixedicons/*.svg', {buffer: true})
         .pipe(gulp.dest(__dirname + '/results/unprefixedicons/'))
         .pipe(es.wait(function() {
           gulp.src(__dirname + '/results/unprefixedicons/*.svg', {buffer: true})
             .pipe(svgicons2svgfont({
               fontName: 'unprefixedicons',
-              appendCodepoints: true
+              startUnicode: 0xE001,
+              appendUnicode: true
             }))
             .pipe(gulp.dest(__dirname + '/results/'))
-            .on('data', function(file) {
+            .on('data', function(_file) {
+              file = _file;
+            })
+            .on('end', function() {
+              // ugly but busy
               assert.equal(fs.existsSync(__dirname +
                 '/results/unprefixedicons/uE001-arrow-down.svg'), true);
               assert.equal(
