@@ -44,7 +44,7 @@ The plugin stream emits a `codepoints` event letting you do whatever you want
 Please report icons to font issues to the
  [svgicons2svgfont](https://github.com/nfroidure/svgicons2svgfont) repository
  on wich this plugin depends. Note this Gulp plugin is strictly equivalent to
- the above module [CLI interface](https://github.com/nfroidure/svgicons2svgfont).
+ the above module [CLI interface](https://github.com/nfroidure/svgicons2svgfont#cli-interface).
 
 ## API
 
