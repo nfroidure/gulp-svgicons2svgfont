@@ -56,8 +56,6 @@ Default value: `false`
 
 Set to true to also convert read icons that doesn't have the .svg extension.
 
-A string value that is used to name your font-family (required).
-
 #### options.appendUnicode
 Type: `Boolean`
 Default value: `false`
@@ -74,7 +72,7 @@ Starting codepoint used for the generated glyphs. Defaults to a region within th
 #### options.*
 The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
  options are also available:
-* options.fontName
+* options.fontName (required)
 * options.fixedWidth
 * options.centerHorizontally
 * options.normalize
