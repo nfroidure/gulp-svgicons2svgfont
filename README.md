@@ -69,7 +69,7 @@ Allow to append unicode codepoints to icon files in order to always keep the
 Type: `integer`
 Default value: `0xEA01`
 
-Starting codepoint used for the generated glyphs. Defaults to the start of the Unicode private use area.
+Starting codepoint used for the generated glyphs. Defaults to a region within the Unicode private use area which is currently unused. See [this blog post](http://www.filamentgroup.com/lab/bulletproof_icon_fonts.html) for further details and additional suggestions regarding accessibility of icon fonts.
 
 #### options.*
 The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
@@ -96,4 +96,3 @@ You may look after a full Gulp web font workflow, see
 
 ## Contributing
 Feel free to push your code if you agree with publishing under the MIT license.
-
