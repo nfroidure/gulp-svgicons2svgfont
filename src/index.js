@@ -58,13 +58,18 @@ module.exports = function(options) {
 
     // Wrap icons for the underlying lib
     var matches = path.basename(file.path)
-      .match(/^(?:u([0-9a-f]{4,6})\-)?(.*).svg$/i);
+      .match(/^(?:((?:u[0-9a-f]{4,6},?)+)\-)?(.*).svg$/i);
     var metadata = {
       name: matches[2],
       unicode: ''
     };
     if(matches && matches[1]) {
-      metadata.unicode = String.fromCharCode(parseInt(matches[1], 16));
+      metadata.unicode = matches[1].split(',').map(function(match) {
+        match = match.substr(1);
+        return match.split('u').map(function(code) {
+          return String.fromCharCode(parseInt(code, 16));
+        }).join('');
+      });
       usedCodePoints.push(metadata.unicode);
     } else {
       do {
