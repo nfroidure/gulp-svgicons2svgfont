@@ -70,7 +70,7 @@ module.exports = function(options) {
           return String.fromCharCode(parseInt(code, 16));
         }).join('');
       });
-      usedCodePoints.push(metadata.unicode);
+      usedCodePoints = usedCodePoints.concat(metadata.unicode);
     } else {
       do {
         metadata.unicode = String.fromCharCode(curCodepoint++);
