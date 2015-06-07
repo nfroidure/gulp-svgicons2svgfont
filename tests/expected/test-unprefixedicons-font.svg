@@ -8,16 +8,16 @@
       descent="0" />
     <missing-glyph horiz-adv-x="0" />
     <glyph glyph-name="arrow-down"
-      unicode="&#xE001;"
+      unicode="&#xEA01;"
       horiz-adv-x="150" d=" M75 30L120 80L30 80z" />
     <glyph glyph-name="arrow-left"
-      unicode="&#xE002;"
+      unicode="&#xEA02;"
       horiz-adv-x="150" d=" M50 75L100 120L100 30z" />
     <glyph glyph-name="arrow-right"
-      unicode="&#xE003;"
+      unicode="&#xEA03;"
       horiz-adv-x="150" d=" M100 75L50 120L50 30z" />
     <glyph glyph-name="arrow-up"
-      unicode="&#xE004;"
+      unicode="&#xEA04;"
       horiz-adv-x="150" d=" M75 80L120 30L30 30z" />
   </font>
 </defs>
