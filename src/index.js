@@ -96,6 +96,9 @@ module.exports = function(options) {
     var iconStream;
     if(file.isBuffer()) {
       iconStream = new Stream.PassThrough();
+      iconStream.on('error', function (error) {
+        outputStream.emit('error', error);
+      });
       setImmediate(function(argument) {
         iconStream.write(file.contents);
         iconStream.end();
