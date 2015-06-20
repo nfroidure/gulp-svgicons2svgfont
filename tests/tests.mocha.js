@@ -6,6 +6,7 @@ var svgicons2svgfont = require('../src/index');
 var assert = require('assert');
 var rimraf = require('rimraf');
 var Stream = require('stream');
+var streamtest = require('streamtest');
 var neatequal = require('neatequal');
 
 describe('gulp-svgicons2svgfont', function() {
@@ -389,10 +390,32 @@ describe('gulp-svgicons2svgfont', function() {
   });
 
 
-  describe('must throw error when no fontname', function() {
+  describe('must throw error', function() {
 
-    assert.throws(function() {
-      svgicons2svgfont();
+    it('when no fontname', function() {
+      assert.throws(function() {
+        svgicons2svgfont();
+      });
+    });
+
+  });
+
+
+  describe('must emit error', function() {
+
+    it('when a glyph is bad', function(done) {
+        var s = svgicons2svgfont({
+          fontName: 'unprefixedicons'
+        });
+        s.on('error', function(err) {
+          assert.equal(err.message, 'Non-whitespace before first tag.\nLine: 0\nColumn: 1\nChar: o');
+          done();
+        });
+        s.write(new gutil.File({
+          path: 'bibabelula.svg',
+          contents: streamtest.v2.fromChunks(['oh', 'yeah'])
+        }));
+        s.end();
     });
 
   });

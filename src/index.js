@@ -64,6 +64,9 @@ module.exports = function(options) {
     // Generating the font
     if(!firstFile) {
       fontStream = svgicons2svgfont(options);
+      fontStream.on('error', function (error) {
+        outputStream.emit('error', error);
+      });
       firstFile = file;
       // Create the font file
       var joinedFile = new gutil.File({
@@ -96,9 +99,6 @@ module.exports = function(options) {
     var iconStream;
     if(file.isBuffer()) {
       iconStream = new Stream.PassThrough();
-      iconStream.on('error', function (error) {
-        outputStream.emit('error', error);
-      });
       setImmediate(function(argument) {
         iconStream.write(file.contents);
         iconStream.end();
@@ -106,10 +106,15 @@ module.exports = function(options) {
     } else {
       iconStream = file.contents;
     }
-    iconStream.metadata = metadata(file.path);
-    fontStream.write(iconStream);
+    metadata(file.path, function(err, theMetadata) {
+      if(err) {
+        fontStream.emit('error', err);
+      }
+      iconStream.metadata = theMetadata;
+      fontStream.write(iconStream);
 
-    done();
+      done();
+    });
   };
 
   inputStream._flush  = function _gulpSVGIcons2SVGFontFlush(done) {
