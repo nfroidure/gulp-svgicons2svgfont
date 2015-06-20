@@ -79,6 +79,7 @@ The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2sv
 * options.fontHeight
 * options.round
 * options.descent
+* options.metadata
 * options.log
 
 ### Note
