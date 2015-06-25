@@ -8,7 +8,7 @@ var plexer = require('plexer');
 module.exports = function(options) {
   var files = [];
   var firstFile = null;
-  var metadata;
+  var metadataProvider;
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
@@ -43,7 +43,7 @@ module.exports = function(options) {
       [].slice.call(arguments, 0).concat()));
   };
 
-  metadata = require('svgicons2svgfont/src/metadata')({
+  metadataProvider = options.metadataProvider || require('svgicons2svgfont/src/metadata')({
     startUnicode: options.startUnicode,
     appendUnicode: options.appendUnicode
   });
@@ -106,7 +106,7 @@ module.exports = function(options) {
     } else {
       iconStream = file.contents;
     }
-    metadata(file.path, function(err, theMetadata) {
+    metadataProvider(file.path, function(err, theMetadata) {
       if(err) {
         fontStream.emit('error', err);
       }
