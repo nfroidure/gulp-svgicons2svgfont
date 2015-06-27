@@ -61,6 +61,26 @@ describe('gulp-svgicons2svgfont', function() {
         });
     });
 
+    it('should work with the metadataProvider option', function(done) {
+      gulp.src(__dirname + '/fixtures/cleanicons/*.svg', {buffer: false})
+        .pipe(svgicons2svgfont({
+          fontName: 'cleanicons',
+          metadataProvider: require('svgicons2svgfont/src/metadata')({
+            startUnicode: 0xE001
+          })
+        })).on('data', function(file) {
+          assert.equal(file.isStream(), true);
+          file.pipe(es.wait(function(err, data) {
+            assert.equal(err, undefined);
+            assert.equal(
+              data.toString('utf-8'),
+              fs.readFileSync(__dirname + '/expected/test-cleanicons-font.svg', 'utf8')
+            );
+            done();
+          }));
+        });
+    });
+
     it('should work with prefixedicons', function(done) {
       gulp.src(__dirname + '/fixtures/prefixedicons/*.svg', {buffer: false})
         .pipe(svgicons2svgfont({
