@@ -34,17 +34,17 @@
     }
   ],
   "dependencies": {
-    "gulp-util": "~3.0.5",
+    "gulp-util": "~3.0.6",
     "plexer": "0.0.3",
-    "readable-stream": "^2.0.0",
-    "svgicons2svgfont": "3.0.2"
+    "readable-stream": "^2.0.1",
+    "svgicons2svgfont": "3.0.3"
   },
   "devDependencies": {
     "coveralls": "~2.11.2",
     "event-stream": "~3.3.1",
     "gulp": "~3.9.0",
-    "gulp-util": "~3.0.5",
-    "istanbul": "~0.3.15",
+    "gulp-util": "~3.0.6",
+    "istanbul": "~0.3.16",
     "mocha": "~2.2.5",
     "mocha-lcov-reporter": "0.0.2",
     "neatequal": "^1.0.0",
