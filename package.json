@@ -47,11 +47,11 @@
     "event-stream": "~3.3.1",
     "gulp": "~3.9.0",
     "gulp-util": "~3.0.6",
-    "istanbul": "~0.3.16",
+    "istanbul": "~0.3.17",
     "mocha": "~2.2.5",
     "mocha-lcov-reporter": "0.0.2",
     "neatequal": "^1.0.0",
-    "rimraf": "2.4.0",
+    "rimraf": "2.4.1",
     "streamtest": "^1.2.1"
   }
 }
