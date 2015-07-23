@@ -6,7 +6,8 @@ var path = require('path');
 var plexer = require('plexer');
 
 module.exports = function(options) {
-  var files = [];
+  var filesBuffer = [];
+  var streamsBuffer = [];
   var firstFile = null;
   var metadataProvider;
 
@@ -111,16 +112,21 @@ module.exports = function(options) {
         fontStream.emit('error', err);
       }
       iconStream.metadata = theMetadata;
-      fontStream.write(iconStream);
 
       done();
     });
+    filesBuffer.push(file);
+    streamsBuffer.push(iconStream);
   };
 
   inputStream._flush  = function _gulpSVGIcons2SVGFontFlush(done) {
     if(!firstFile) {
       outputStream.end();
     } else {
+
+      streamsBuffer.forEach(function(iconStream) {
+        fontStream.write(iconStream);
+      });
       fontStream.end();
     }
     done();
