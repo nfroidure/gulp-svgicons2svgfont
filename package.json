@@ -6,7 +6,10 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha tests/*.mocha.js",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report html -- tests/*.mocha.js -R spec -t 5000"
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report html -- tests/*.mocha.js -R spec -t 5000",
+    "lint": "eslint **/*.js",
+    "lintconfig": "sf-lint-sync",
+    "cli": "env NPM_RUN_CLI=1"
   },
   "keywords": [
     "gulpplugin",
@@ -44,13 +47,16 @@
   },
   "devDependencies": {
     "coveralls": "~2.11.3",
+    "eslint": "^0.24.1",
     "event-stream": "~3.3.1",
     "gulp": "~3.9.0",
     "istanbul": "~0.3.17",
+    "mkdirp": "^0.5.1",
     "mocha": "~2.2.5",
     "mocha-lcov-reporter": "0.0.2",
     "neatequal": "^1.0.0",
     "rimraf": "2.4.2",
+    "sf-lint": "^1.0.2",
     "streamtest": "^1.2.1"
   }
 }

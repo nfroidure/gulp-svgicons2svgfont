@@ -4,6 +4,7 @@ var Stream = require('readable-stream');
 var Fs = require('fs');
 var path = require('path');
 var plexer = require('plexer');
+var fileSorter = require('svgicons2svgfont/src/filesorter');
 
 module.exports = function(options) {
   var filesBuffer = [];
@@ -62,13 +63,13 @@ module.exports = function(options) {
       return;
     }
 
-    // Generating the font
-    if(!firstFile) {
+    if(0 === filesBuffer.length) {
+      // Generating the font
+      var firstFile = file;
       fontStream = svgicons2svgfont(options);
       fontStream.on('error', function (error) {
         outputStream.emit('error', error);
       });
-      firstFile = file;
       // Create the font file
       var joinedFile = new gutil.File({
         cwd: firstFile.cwd,
@@ -90,45 +91,53 @@ module.exports = function(options) {
       } else {
         joinedFile.contents = fontStream;
         outputStream.push(joinedFile);
-        fontStream.on('end', function() {
-          outputStream.end();
-        });
+        outputStream.end();
       }
     }
 
-    // Wrap icons for the underlying lib
-    var iconStream;
-    if(file.isBuffer()) {
-      iconStream = new Stream.PassThrough();
-      setImmediate(function(argument) {
-        iconStream.write(file.contents);
-        iconStream.end();
-      });
-    } else {
-      iconStream = file.contents;
-    }
-    metadataProvider(file.path, function(err, theMetadata) {
-      if(err) {
-        fontStream.emit('error', err);
-      }
-      iconStream.metadata = theMetadata;
-
-      done();
-    });
+    // Otherwise buffer the files
     filesBuffer.push(file);
-    streamsBuffer.push(iconStream);
+
+    done();
   };
 
   inputStream._flush  = function _gulpSVGIcons2SVGFontFlush(done) {
-    if(!firstFile) {
+    if(!filesBuffer.length) {
       outputStream.end();
-    } else {
-
-      streamsBuffer.forEach(function(iconStream) {
-        fontStream.write(iconStream);
-      });
-      fontStream.end();
+      return done();
     }
+
+    // Sorting files
+    filesBuffer = filesBuffer.sort(function(fileA, fileB) {
+      return fileSorter(fileA.path, fileB.path);
+    });
+
+    // Wrap icons for the underlying lib
+    filesBuffer.forEach(function(file) {
+      var iconStream;
+      if(file.isBuffer()) {
+        iconStream = new Stream.PassThrough();
+        setImmediate(function(argument) {
+          iconStream.write(file.contents);
+          iconStream.end();
+        });
+      } else {
+        iconStream = file.contents;
+      }
+      metadataProvider(file.path, function(err, theMetadata) {
+        if(err) {
+          fontStream.emit('error', err);
+        }
+        iconStream.metadata = theMetadata;
+
+        fontStream.write(iconStream);
+        filesBuffer.splice(filesBuffer.indexOf(file), 1);
+        if(0 === filesBuffer.length) {
+          fontStream.end();
+        }
+      });
+    });
+
     done();
   };
 
