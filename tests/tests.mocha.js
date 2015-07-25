@@ -9,7 +9,6 @@ var gutil = require('gulp-util');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 
-var Stream = require('stream');
 var assert = require('assert');
 var streamtest = require('streamtest');
 var neatequal = require('neatequal');
