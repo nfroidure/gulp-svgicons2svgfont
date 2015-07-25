@@ -73,6 +73,8 @@ Starting codepoint used for the generated glyphs. Defaults to a region within th
 The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
  options are also available:
 * options.fontName (required)
+* options.fontWeight
+* options.fontStyle
 * options.fixedWidth
 * options.centerHorizontally
 * options.normalize
