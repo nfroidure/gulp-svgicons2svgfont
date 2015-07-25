@@ -248,7 +248,7 @@ describe('gulp-svgicons2svgfont', function() {
               .on('end', done);
           });
 
-          it('should work with unprefixed icons', function(done) {
+          it('should work with unprefixed icons and the appendUnicode option', function(done) {
             gulp.src(__dirname + '/results/unprefixedicons/*.svg', {buffer: false})
               .pipe(svgicons2svgfont({
                 fontName: 'unprefixedicons',
@@ -294,6 +294,57 @@ describe('gulp-svgicons2svgfont', function() {
                   assert.equal(
                     fs.readFileSync(__dirname + '/results/unprefixedicons/uEA04-arrow-up.svg', 'utf8'),
                     fs.readFileSync(__dirname + '/fixtures/unprefixedicons/arrow-up.svg', 'utf8')
+                  );
+                  done();
+                }));
+              }));
+          });
+
+        });
+
+        describe('', function() {
+
+          beforeEach(function(done) {
+            gulp.src(__dirname + '/fixtures/unicons/*.svg')
+              .pipe(gulp.dest(__dirname + '/results/unicons/'))
+              .on('error', done)
+              .on('end', done);
+          });
+
+          it('should work with mixed icons and the appendUnicode option', function(done) {
+            gulp.src(__dirname + '/results/unicons/*.svg', {buffer: false})
+              .pipe(svgicons2svgfont({
+                fontName: 'unicons',
+                appendUnicode: true
+              })).on('error', done)
+              .pipe(streamtest.v2.toObjects(function(err, files) {
+                if(err) {
+                  return done(err);
+                }
+                assert.equal(files.length, 1);
+                assert.equal(files[0].isStream(), true);
+                files[0].pipe(streamtest.v2.toText(function(err, text) {
+                  if(err) {
+                    return done(err);
+                  }
+                  assert.equal(
+                    text,
+                    fs.readFileSync(
+                      path.join(__dirname, 'expected', 'test-unicons-font.svg'),
+                      'utf8'
+                    )
+                  );
+                  assert.equal(fs.existsSync(__dirname +
+                    '/results/unicons/uEA01-twitter.svg'), true);
+                  assert.equal(
+                    fs.readFileSync(__dirname + '/results/unicons/uEA01-twitter.svg', 'utf8'),
+                    fs.readFileSync(__dirname + '/fixtures/unicons/uEA01-twitter.svg', 'utf8')
+                  );
+                  assert.equal(fs.existsSync(__dirname +
+                    '/results/unicons/uEA02-facebook.svg'), true);
+                  assert.equal(
+                    fs.readFileSync(__dirname + '/results/unicons/uEA02-facebook.svg', 'utf8'),
+                    fs.readFileSync(__dirname + '/fixtures/unicons/facebook.svg', 'utf8')
                   );
                   done();
                 }));
