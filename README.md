@@ -69,6 +69,12 @@ Default value: `0xEA01`
 
 Starting codepoint used for the generated glyphs. Defaults to a region within the Unicode private use area which is currently unused. See [this blog post](http://www.filamentgroup.com/lab/bulletproof_icon_fonts.html) for further details and additional suggestions regarding accessibility of icon fonts.
 
+#### options.metadataProvider
+Type: `Function`
+Default value: [`require('svgicons2svgfont/src/metadata')(options)`](https://github.com/nfroidure/gulp-svgicons2svgfont/blob/master/src/index.js#L47-L50)
+
+Allows to define your own logic to attach codepoints to input files.
+
 #### options.*
 The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
  options are also available:
