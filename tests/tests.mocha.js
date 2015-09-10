@@ -449,11 +449,36 @@ describe('gulp-svgicons2svgfont', function() {
             }));
         });
 
+        it('should support filename change', function(done) {
+          gulp.src(
+            path.join(__dirname, 'fixtures', 'cleanicons', '*.svg'),
+            { buffer: false }
+          )
+            .pipe(svgicons2svgfont({
+              fontName: 'cleanicons',
+              fileName: 'newName',
+              startUnicode: 0xE001,
+            }))
+            .pipe(streamtest.v2.toObjects(function(err, files) {
+              if(err) {
+                return done(err);
+              }
+              console.log(files);
+              console.log(__dirname);
+              console.log(files[0].path);
+              assert.equal(files.length, 1);
+              assert.equal(files[0].isStream(), true);
+              assert.equal(fs.exists(__dirname, 'fixtures', 'cleanicons', 'newName.svg'));
+              done();
+            }));
+        });
+
       });
 
       describe('in buffer mode', function() {
 
         it('should work with cleanicons', function(done) {
+          //this.timeout(30000);
           gulp.src(
             path.join(__dirname, 'fixtures', 'cleanicons', '*.svg'),
             { buffer: true }
@@ -521,6 +546,26 @@ describe('gulp-svgicons2svgfont', function() {
             }));
         });
 
+        it('should support filename change', function(done) {
+          gulp.src(
+            path.join(__dirname, 'fixtures', 'cleanicons', '*.svg'),
+            { buffer: true }
+          )
+            .pipe(svgicons2svgfont({
+              fontName: 'cleanicons',
+              fileName: 'newName',
+              startUnicode: 0xE001,
+            }))
+            .pipe(streamtest.v2.toObjects(function(err, files) {
+              if(err) {
+                return done(err);
+              }
+              assert.equal(files.length, 1);
+              assert.equal(files[0].isBuffer(), true);
+              assert.equal(fs.exists(__dirname, 'fixtures', 'cleanicons', 'newName.svg'));
+              done();
+            }));
+        });
       });
 
     });
