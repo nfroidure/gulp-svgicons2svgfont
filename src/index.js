@@ -51,6 +51,7 @@ module.exports = function(options) {
 
   inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
     var fontFile = null;
+    var buf = null;
 
     // When null just pass through
     if(file.isNull()) {
@@ -79,7 +80,7 @@ module.exports = function(options) {
 
       // Giving the font back to the stream
       if(file.isBuffer()) {
-        var buf = new Buffer('');
+        buf = new Buffer(''); // use let when going to es6
         fontStream.on('data', function(chunk) {
           buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
         });
