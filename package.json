@@ -8,7 +8,7 @@
     "coveralls": "istanbul cover _mocha --report lcovonly -- tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "cover": "istanbul cover _mocha --report html -- tests/*.mocha.js -R spec -t 5000",
     "lint": "eslint src/*.js tests/*.js",
-    "preversion": "npm lint && npm test",
+    "preversion": "npm run lint && npm test",
     "cli": "env NPM_RUN_CLI=1"
   },
   "keywords": [
