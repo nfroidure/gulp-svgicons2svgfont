@@ -19,6 +19,7 @@ module.exports = function(options) {
   options.ignoreExt = options.ignoreExt || false;
   options.startUnicode = options.startUnicode || 0xEA01;
   options.appendUnicode = !!options.appendUnicode;
+  options.fileName = options.fileName || options.fontName;
 
   if(!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
@@ -75,7 +76,7 @@ module.exports = function(options) {
       fontFile = new gutil.File({
         cwd: file.cwd,
         base: file.base,
-        path: path.join(file.base, options.fileName || options.fontName) + '.svg',
+        path: path.join(file.base, options.fileName) + '.svg',
       });
 
       // Giving the font back to the stream
