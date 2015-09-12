@@ -75,7 +75,7 @@ module.exports = function(options) {
       fontFile = new gutil.File({
         cwd: file.cwd,
         base: file.base,
-        path: path.join(file.base, options.fontName) + '.svg',
+        path: path.join(file.base, options.fileName || options.fontName) + '.svg',
       });
 
       // Giving the font back to the stream

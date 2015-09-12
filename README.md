@@ -63,6 +63,12 @@ Default value: `false`
 Allow to append unicode codepoints to icon files in order to always keep the
  same codepoints on each run.
 
+#### options.fileName
+Type: `String`
+Default value: options.fontName
+
+Allows to specify a fileName if needed it to be different from the fontName, eg. do not want to have spaces.
+
 #### options.startUnicode
 Type: `integer`
 Default value: `0xEA01`
@@ -79,6 +85,7 @@ Allows to define your own logic to attach codepoints to input files.
 The [svgfont2svgicons](https://github.com/nfroidure/svgicons2svgfont#svgicons2svgfontoptions)
  options are also available:
 * options.fontName (required)
+* options.fileName
 * options.fontWeight
 * options.fontStyle
 * options.fixedWidth
