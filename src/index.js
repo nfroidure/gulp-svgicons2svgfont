@@ -9,6 +9,7 @@ var fileSorter = require('svgicons2svgfont/src/filesorter');
 
 module.exports = function(options) {
   var filesBuffer = [];
+  var filenamesAdded = [];
   var metadataProvider;
   var inputStream = new Stream.Transform({ objectMode: true });
   var outputStream = new Stream.PassThrough({ objectMode: true });
@@ -114,6 +115,9 @@ module.exports = function(options) {
       return fileSorter(fileA.path, fileB.path);
     });
 
+    // make an index of filenames yet to have metadata provided
+    filenamesAdded = filesBuffer.map(function(file) { return file.path; });
+
     // Wrap icons for the underlying lib
     filesBuffer.forEach(function(file) {
       var iconStream;
@@ -134,8 +138,8 @@ module.exports = function(options) {
         iconStream.metadata = theMetadata;
 
         fontStream.write(iconStream);
-        filesBuffer.splice(filesBuffer.indexOf(file), 1);
-        if(0 === filesBuffer.length) {
+        filenamesAdded.splice(filenamesAdded.indexOf(file), 1);
+        if(0 === filenamesAdded.length) {
           fontStream.end();
         }
       });
