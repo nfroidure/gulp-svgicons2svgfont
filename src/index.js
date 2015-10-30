@@ -108,6 +108,8 @@ module.exports = function(options) {
       outputStream.end();
       return done();
     }
+    
+    var length = filesBuffer.length;
 
     // Sorting files
     filesBuffer = filesBuffer.sort(function(fileA, fileB) {
@@ -134,8 +136,7 @@ module.exports = function(options) {
         iconStream.metadata = theMetadata;
 
         fontStream.write(iconStream);
-        filesBuffer.splice(filesBuffer.indexOf(file), 1);
-        if(0 === filesBuffer.length) {
+        if(0 === --length) {
           fontStream.end();
         }
       });
