@@ -8,6 +8,7 @@
    viewBox="0 0 150 150"
    id="svg2">
   <path
+     fill="#0F0F0F"
      d="m 10,95 130,0 0,-35 L 10,60 z"
      id="rect2986" />
 </svg>
