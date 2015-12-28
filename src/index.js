@@ -36,6 +36,7 @@ module.exports = function(options) {
       return {
         name: glyph.name,
         unicode: glyph.unicode,
+        color: glyph.color
       };
     }));
   };
