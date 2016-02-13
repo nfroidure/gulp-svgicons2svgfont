@@ -56,12 +56,12 @@ Default value: `false`
 
 Set to true to also convert read icons that doesn't have the .svg extension.
 
-#### options.appendUnicode
+#### options.prependUnicode
 Type: `Boolean`
 Default value: `false`
 
-Allow to append unicode codepoints to icon files in order to always keep the
- same codepoints on each run.
+Allow to prepend unicode codepoints to icon file names in order to always keep
+ the same codepoints accross each run.
 
 #### options.fileName
 Type: `String`

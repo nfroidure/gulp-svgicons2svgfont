@@ -80,7 +80,7 @@ describe('gulp-svgicons2svgfont', function() {
 
       });
 
-      it('should let non-svg files pass through (appendUnicode)', function(done) {
+      it('should let non-svg files pass through (prependUnicode)', function(done) {
         var file = new gutil.File({
           path: 'bibabelula.foo',
           contents: streamtest.v2.fromChunks(['oh', 'yeah']),
@@ -90,7 +90,7 @@ describe('gulp-svgicons2svgfont', function() {
         .pipe(svgicons2svgfont({
           fontName: 'unprefixedicons',
           startUnicode: 0xE001,
-          appendUnicode: true,
+          prependUnicode: true,
         }))
         .pipe(streamtest.v2.toObjects(function(err, files) {
           if(err) {
@@ -259,14 +259,14 @@ describe('gulp-svgicons2svgfont', function() {
               .on('end', done);
           });
 
-          it('should work with unprefixed icons and the appendUnicode option', function(done) {
+          it('should work with unprefixed icons and the prependUnicode option', function(done) {
             gulp.src(
               path.join(__dirname, 'results', 'unprefixedicons', '*.svg'),
               { buffer: false }
             )
               .pipe(svgicons2svgfont({
                 fontName: 'unprefixedicons',
-                appendUnicode: true,
+                prependUnicode: true,
               }))
               .pipe(streamtest.v2.toObjects(function(err, files) {
                 if(err) {
@@ -350,14 +350,14 @@ describe('gulp-svgicons2svgfont', function() {
               .on('end', done);
           });
 
-          it('should work with mixed icons and the appendUnicode option', function(done) {
+          it('should work with mixed icons and the prependUnicode option', function(done) {
             gulp.src(
               path.join(__dirname, 'results', 'unicons', '*.svg'),
               { buffer: false }
             )
               .pipe(svgicons2svgfont({
                 fontName: 'unicons',
-                appendUnicode: true,
+                prependUnicode: true,
               })).on('error', done)
               .pipe(streamtest.v2.toObjects(function(err, files) {
                 if(err) {
@@ -576,6 +576,14 @@ describe('gulp-svgicons2svgfont', function() {
     it('when no fontname is given', function() {
       assert.throws(function() {
         svgicons2svgfont();
+      });
+    });
+
+    it('when using old options', function() {
+      assert.throws(function() {
+        svgicons2svgfont({
+          appendUnicode: true,
+        });
       });
     });
 

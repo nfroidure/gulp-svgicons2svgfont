@@ -18,8 +18,16 @@ module.exports = function(options) {
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
   options.startUnicode = options.startUnicode || 0xEA01;
-  options.appendUnicode = !!options.appendUnicode;
+  options.prependUnicode = !!options.prependUnicode;
   options.fileName = options.fileName || options.fontName;
+
+  if(options.appendUnicode) {
+    throw new gutil.PluginError(
+      'svgicons2svgfont',
+      'The "appendUnicode" option were renamed "prependUnicode".' +
+      ' See https://github.com/nfroidure/gulp-svgicons2svgfont/issues/33'
+    );
+  }
 
   if(!options.fontName) {
     throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
@@ -48,7 +56,7 @@ module.exports = function(options) {
 
   metadataProvider = options.metadataProvider || require('svgicons2svgfont/src/metadata')({
     startUnicode: options.startUnicode,
-    appendUnicode: options.appendUnicode,
+    prependUnicode: options.prependUnicode,
   });
 
   inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
@@ -109,7 +117,7 @@ module.exports = function(options) {
       outputStream.end();
       return done();
     }
-    
+
     var length = filesBuffer.length;
 
     // Sorting files
