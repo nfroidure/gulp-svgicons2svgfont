@@ -43,7 +43,7 @@
     "gulp-util": "~3.0.6",
     "plexer": "1.0.1",
     "readable-stream": "^2.0.2",
-    "svgicons2svgfont": "^3.2.1"
+    "svgicons2svgfont": "^4.0.0"
   },
   "devDependencies": {
     "coveralls": "~2.11.4",
@@ -51,12 +51,12 @@
     "eslint-config-simplifield": "^1.1.0",
     "event-stream": "~3.3.1",
     "gulp": "~3.9.0",
-    "istanbul": "~0.3.19",
+    "istanbul": "^0.4.2",
     "mkdirp": "^0.5.1",
-    "mocha": "~2.3.2",
-    "mocha-lcov-reporter": "0.0.2",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.0.0",
     "neatequal": "^1.0.0",
-    "rimraf": "2.4.3",
+    "rimraf": "^2.5.2",
     "streamtest": "^1.2.1"
   }
 }
