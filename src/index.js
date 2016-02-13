@@ -6,6 +6,7 @@ var Stream = require('readable-stream');
 var path = require('path');
 var plexer = require('plexer');
 var fileSorter = require('svgicons2svgfont/src/filesorter');
+var defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
 
 module.exports = function(options) {
   var filesBuffer = [];
@@ -44,7 +45,7 @@ module.exports = function(options) {
       return {
         name: glyph.name,
         unicode: glyph.unicode,
-        color: glyph.color || null
+        color: glyph.color || null,
       };
     }));
   };
@@ -54,7 +55,7 @@ module.exports = function(options) {
       [].slice.call(arguments, 0).concat()));
   };
 
-  metadataProvider = options.metadataProvider || require('svgicons2svgfont/src/metadata')({
+  metadataProvider = options.metadataProvider || defaultMetadataProvider({
     startUnicode: options.startUnicode,
     prependUnicode: options.prependUnicode,
   });
@@ -113,12 +114,12 @@ module.exports = function(options) {
   };
 
   inputStream._flush = function _gulpSVGIcons2SVGFontFlush(done) {
-    if(!filesBuffer.length) {
+    var bufferLength = filesBuffer.length;
+
+    if(!bufferLength) {
       outputStream.end();
       return done();
     }
-
-    var length = filesBuffer.length;
 
     // Sorting files
     filesBuffer = filesBuffer.sort(function(fileA, fileB) {
@@ -145,7 +146,7 @@ module.exports = function(options) {
         iconStream.metadata = theMetadata;
 
         fontStream.write(iconStream);
-        if(0 === --length) {
+        if(0 === --bufferLength) {
           fontStream.end();
         }
       });

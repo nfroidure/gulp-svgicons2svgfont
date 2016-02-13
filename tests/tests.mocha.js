@@ -16,6 +16,7 @@ var streamtest = require('streamtest');
 var neatequal = require('neatequal');
 
 var svgicons2svgfont = require('../src/index');
+var defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
 
 describe('gulp-svgicons2svgfont', function() {
 
@@ -163,7 +164,7 @@ describe('gulp-svgicons2svgfont', function() {
           )
             .pipe(svgicons2svgfont({
               fontName: 'cleanicons',
-              metadataProvider: require('svgicons2svgfont/src/metadata')({
+              metadataProvider: defaultMetadataProvider({
                 startUnicode: 0xE001,
               }),
             }))
