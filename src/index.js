@@ -42,11 +42,14 @@ module.exports = function(options) {
   // Emit event containing codepoint mapping
   options.callback = function(glyphs) {
     stream.emit('glyphs', glyphs.map(function(glyph) {
-      return {
+      var finalGlyph = {
         name: glyph.name,
         unicode: glyph.unicode,
-        color: glyph.color || null,
       };
+      if(glyph.color) {
+        finalGlyph.color = glyph.color;
+      }
+      return finalGlyph;
     }));
   };
 
