@@ -45,6 +45,7 @@ module.exports = function(options) {
       var finalGlyph = {
         name: glyph.name,
         unicode: glyph.unicode,
+        color: glyph.color || null
       };
       if(glyph.color) {
         finalGlyph.color = glyph.color;
