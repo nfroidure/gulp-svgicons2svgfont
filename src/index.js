@@ -1,20 +1,20 @@
 'use strict';
 
-const svgicons2svgfont = require('svgicons2svgfont');
-const gutil = require('gulp-util');
-const Stream = require('readable-stream');
-const path = require('path');
-const plexer = require('plexer');
-const fileSorter = require('svgicons2svgfont/src/filesorter');
-const defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
+var svgicons2svgfont = require('svgicons2svgfont');
+var gutil = require('gulp-util');
+var Stream = require('readable-stream');
+var path = require('path');
+var plexer = require('plexer');
+var fileSorter = require('svgicons2svgfont/src/filesorter');
+var defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
 
-module.exports = (options) => {
-  let filesBuffer = [];
-  let metadataProvider;
-  const inputStream = new Stream.Transform({ objectMode: true });
-  const outputStream = new Stream.PassThrough({ objectMode: true });
-  const stream = plexer({ objectMode: true }, inputStream, outputStream);
-  let fontStream;
+module.exports = function(options) {
+  var filesBuffer = [];
+  var metadataProvider;
+  var inputStream = new Stream.Transform({ objectMode: true });
+  var outputStream = new Stream.PassThrough({ objectMode: true });
+  var stream = plexer({ objectMode: true }, inputStream, outputStream);
+  var fontStream;
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
@@ -35,18 +35,17 @@ module.exports = (options) => {
   }
 
   options.log = options.log || function() {
-    gutil.log(...['gulp-svgicons2svgfont:'].concat(
+    gutil.log.apply(gutil, ['gulp-svgicons2svgfont:'].concat(
       [].slice.call(arguments, 0).concat()));
   };
 
   // Emit event containing codepoint mapping
   options.callback = function(glyphs) {
-    stream.emit('glyphs', glyphs.map((glyph) => {
-      const finalGlyph = {
+    stream.emit('glyphs', glyphs.map(function(glyph) {
+      var finalGlyph = {
         name: glyph.name,
         unicode: glyph.unicode,
       };
-
       if(glyph.color) {
         finalGlyph.color = glyph.color;
       }
@@ -65,8 +64,8 @@ module.exports = (options) => {
   });
 
   inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
-    let fontFile = null;
-    let buf = null;
+    var fontFile = null;
+    var buf = null;
 
     // When null just pass through
     if(file.isNull()) {
@@ -83,23 +82,23 @@ module.exports = (options) => {
     if(0 === filesBuffer.length) {
       // Generating the font
       fontStream = svgicons2svgfont(options);
-      fontStream.on('error', (err) => {
+      fontStream.on('error', function(err) {
         outputStream.emit('error', err);
       });
       // Create the font file
       fontFile = new gutil.File({
         cwd: file.cwd,
         base: file.base,
-        path: `${path.join(file.base, options.fileName)}.svg`,
+        path: path.join(file.base, options.fileName) + '.svg',
       });
 
       // Giving the font back to the stream
       if(file.isBuffer()) {
-        buf = Buffer.from(''); // use let when going to es6
-        fontStream.on('data', (chunk) => {
+        buf = new Buffer(''); // use let when going to es6
+        fontStream.on('data', function(chunk) {
           buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
         });
-        fontStream.on('end', () => {
+        fontStream.on('end', function() {
           fontFile.contents = buf;
           outputStream.push(fontFile);
           outputStream.end();
@@ -118,31 +117,32 @@ module.exports = (options) => {
   };
 
   inputStream._flush = function _gulpSVGIcons2SVGFontFlush(done) {
-    let bufferLength = filesBuffer.length;
+    var bufferLength = filesBuffer.length;
 
     if(!bufferLength) {
       outputStream.end();
-      done();
-      return;
+      return done();
     }
 
     // Sorting files
-    filesBuffer = filesBuffer.sort((fileA, fileB) => fileSorter(fileA.path, fileB.path));
+    filesBuffer = filesBuffer.sort(function(fileA, fileB) {
+      return fileSorter(fileA.path, fileB.path);
+    });
 
     // Wrap icons for the underlying lib
-    filesBuffer.forEach((file) => {
-      let iconStream;
+    filesBuffer.forEach(function(file) {
+      var iconStream;
 
       if(file.isBuffer()) {
         iconStream = new Stream.PassThrough();
-        setImmediate(() => {
+        setImmediate(function() {
           iconStream.write(file.contents);
           iconStream.end();
         });
       } else {
         iconStream = file.contents;
       }
-      metadataProvider(file.path, (err, theMetadata) => {
+      metadataProvider(file.path, function(err, theMetadata) {
         if(err) {
           fontStream.emit('error', err);
         }
