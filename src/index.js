@@ -1,6 +1,6 @@
 'use strict';
 
-const svgicons2svgfont = require('svgicons2svgfont');
+const SVGIcon2SVGFontStream = require('svgicons2svgfont');
 const gutil = require('gulp-util');
 const Stream = require('readable-stream');
 const path = require('path');
@@ -82,7 +82,7 @@ module.exports = (options) => {
 
     if(0 === filesBuffer.length) {
       // Generating the font
-      fontStream = svgicons2svgfont(options);
+      fontStream = new SVGIcon2SVGFontStream(options);
       fontStream.on('error', (err) => {
         outputStream.emit('error', err);
       });

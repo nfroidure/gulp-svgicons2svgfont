@@ -43,7 +43,7 @@
     "gulp-util": "~3.0.6",
     "plexer": "1.0.1",
     "readable-stream": "^2.0.2",
-    "svgicons2svgfont": "^6.0.0"
+    "svgicons2svgfont": "^7.0.1"
   },
   "devDependencies": {
     "coveralls": "~2.13.1",
