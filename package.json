@@ -30,12 +30,7 @@
   "bugs": {
     "url": "https://github.com/nfroidure/gulp-svgicons2svgfont/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/nfroidure/gulp-svgicons2svgfont/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "engines": {
     "node": ">= 6.11.1"
   },
@@ -43,7 +38,7 @@
     "gulp-util": "~3.0.6",
     "plexer": "1.0.1",
     "readable-stream": "^2.0.2",
-    "svgicons2svgfont": "^7.0.1"
+    "svgicons2svgfont": "^7.0.2"
   },
   "devDependencies": {
     "coveralls": "~2.13.1",
