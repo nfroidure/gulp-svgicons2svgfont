@@ -6,8 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const gulp = require('gulp');
-const gutil = require('gulp-util');
-
+const Vinyl = require('vinyl');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
@@ -34,7 +33,7 @@ describe('gulp-svgicons2svgfont', () => {
       describe('must emit an error', () => {
 
         it('when a glyph is bad', (done) => {
-          streamtest[version].fromObjects([new gutil.File({
+          streamtest[version].fromObjects([new Vinyl({
             path: 'bibabelula.svg',
             contents: streamtest.v2.fromChunks(['oh', 'yeah']),
           })])
@@ -60,7 +59,7 @@ describe('gulp-svgicons2svgfont', () => {
       describe('with null contents', () => {
 
         it('should let null files pass through', (done) => {
-          const file = new gutil.File({
+          const file = new Vinyl({
             path: 'bibabelula.svg',
             contents: null,
           });
@@ -84,7 +83,7 @@ describe('gulp-svgicons2svgfont', () => {
       });
 
       it('should let non-svg files pass through (prependUnicode)', (done) => {
-        const file = new gutil.File({
+        const file = new Vinyl({
           path: 'bibabelula.foo',
           contents: streamtest.v2.fromChunks(['oh', 'yeah']),
         });
@@ -107,7 +106,7 @@ describe('gulp-svgicons2svgfont', () => {
       });
 
       it('should let non-svg files pass through', (done) => {
-        const file = new gutil.File({
+        const file = new Vinyl({
           path: 'bibabelula.foo',
           contents: streamtest.v2.fromChunks(['oh', 'yeah']),
         });
@@ -263,7 +262,7 @@ describe('gulp-svgicons2svgfont', () => {
             }));
         });
 
-        describe('', () => {
+        describe('more', () => {
 
           beforeEach((done) => {
             gulp.src(path.join(__dirname, 'fixtures', 'unprefixedicons', '*.svg'))
@@ -356,7 +355,7 @@ describe('gulp-svgicons2svgfont', () => {
 
         });
 
-        describe('', () => {
+        describe('more2', () => {
 
           beforeEach((done) => {
             gulp.src(path.join(__dirname, 'fixtures', 'unicons', '*.svg'))

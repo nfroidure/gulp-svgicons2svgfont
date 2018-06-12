@@ -1,7 +1,9 @@
 'use strict';
 
 const SVGIcon2SVGFontStream = require('svgicons2svgfont');
-const gutil = require('gulp-util');
+const log = require('fancy-log');
+const Vinyl = require('vinyl');
+const PluginError = require('plugin-error');
 const Stream = require('readable-stream');
 const path = require('path');
 const plexer = require('plexer');
@@ -23,7 +25,7 @@ module.exports = (options) => {
   options.fileName = options.fileName || options.fontName;
 
   if(options.appendUnicode) {
-    throw new gutil.PluginError(
+    throw new PluginError(
       'svgicons2svgfont',
       'The "appendUnicode" option were renamed "prependUnicode".' +
       ' See https://github.com/nfroidure/gulp-svgicons2svgfont/issues/33'
@@ -31,12 +33,11 @@ module.exports = (options) => {
   }
 
   if(!options.fontName) {
-    throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
+    throw new PluginError('svgicons2svgfont', 'Missing options.fontName');
   }
 
-  options.log = options.log || function() {
-    gutil.log(...['gulp-svgicons2svgfont:'].concat(
-      [].slice.call(arguments, 0).concat()));
+  options.log = options.log || function(...args) {
+    log('gulp-svgicons2svgfont:', ...args);
   };
 
   // Emit event containing codepoint mapping
@@ -54,9 +55,8 @@ module.exports = (options) => {
     }));
   };
 
-  options.error = options.error || function() {
-    stream.emit('error', new gutil.PluginError('svgicons2svgfont',
-      [].slice.call(arguments, 0).concat()));
+  options.error = options.error || function(...args) {
+    stream.emit('error', new PluginError('svgicons2svgfont', args));
   };
 
   metadataProvider = options.metadataProvider || defaultMetadataProvider({
@@ -87,7 +87,7 @@ module.exports = (options) => {
         outputStream.emit('error', err);
       });
       // Create the font file
-      fontFile = new gutil.File({
+      fontFile = new Vinyl({
         cwd: file.cwd,
         base: file.base,
         path: `${path.join(file.base, options.fileName)}.svg`,
