@@ -1,5 +1,6 @@
 'use strict';
 
+const streamifier = require('streamifier');
 const SVGIcon2SVGFontStream = require('svgicons2svgfont');
 const log = require('fancy-log');
 const Vinyl = require('vinyl');
@@ -7,12 +8,9 @@ const PluginError = require('plugin-error');
 const Stream = require('readable-stream');
 const path = require('path');
 const plexer = require('plexer');
-const fileSorter = require('svgicons2svgfont/src/filesorter');
 const defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
 
 module.exports = (options) => {
-  let filesBuffer = [];
-  let metadataProvider;
   const inputStream = new Stream.Transform({ objectMode: true });
   const outputStream = new Stream.PassThrough({ objectMode: true });
   const stream = plexer({ objectMode: true }, inputStream, outputStream);
@@ -59,15 +57,12 @@ module.exports = (options) => {
     stream.emit('error', new PluginError('svgicons2svgfont', args));
   };
 
-  metadataProvider = options.metadataProvider || defaultMetadataProvider({
+  const metadataProvider = options.metadataProvider || defaultMetadataProvider({
     startUnicode: options.startUnicode,
     prependUnicode: options.prependUnicode,
   });
 
   inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
-    let fontFile = null;
-    let buf = null;
-
     // When null just pass through
     if(file.isNull()) {
       outputStream.write(file); done();
@@ -80,81 +75,45 @@ module.exports = (options) => {
       return;
     }
 
-    if(0 === filesBuffer.length) {
+    if(!fontStream) {
       // Generating the font
       fontStream = new SVGIcon2SVGFontStream(options);
       fontStream.on('error', (err) => {
         outputStream.emit('error', err);
       });
       // Create the font file
-      fontFile = new Vinyl({
+      const fontFile = new Vinyl({
         cwd: file.cwd,
         base: file.base,
         path: `${path.join(file.base, options.fileName)}.svg`,
       });
 
-      // Giving the font back to the stream
-      if(file.isBuffer()) {
-        buf = Buffer.from(''); // use let when going to es6
-        fontStream.on('data', (chunk) => {
-          buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
-        });
-        fontStream.on('end', () => {
-          fontFile.contents = buf;
-          outputStream.push(fontFile);
-          outputStream.end();
-        });
-      } else {
-        fontFile.contents = fontStream;
-        outputStream.push(fontFile);
-        outputStream.end();
-      }
+      fontFile.contents = fontStream;
+      outputStream.push(fontFile);
+      outputStream.end();
     }
 
-    // Otherwise buffer the files
-    filesBuffer.push(file);
+    const iconStream = file.isBuffer() ?
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      streamifier.createReadStream(file.contents) :
+      file.contents;
 
-    done();
+    metadataProvider(file.path, (err, metadata) => {
+      if(err) {
+        fontStream.emit('error', err);
+      }
+      iconStream.metadata = metadata;
+
+      fontStream.write(iconStream);
+      done();
+    });
   };
 
   inputStream._flush = function _gulpSVGIcons2SVGFontFlush(done) {
-    let bufferLength = filesBuffer.length;
-
-    if(!bufferLength) {
-      outputStream.end();
-      done();
-      return;
+    if(fontStream) {
+      fontStream.end();
     }
-
-    // Sorting files
-    filesBuffer = filesBuffer.sort((fileA, fileB) => fileSorter(fileA.path, fileB.path));
-
-    // Wrap icons for the underlying lib
-    filesBuffer.forEach((file) => {
-      let iconStream;
-
-      if(file.isBuffer()) {
-        iconStream = new Stream.PassThrough();
-        setImmediate(() => {
-          iconStream.write(file.contents);
-          iconStream.end();
-        });
-      } else {
-        iconStream = file.contents;
-      }
-      metadataProvider(file.path, (err, theMetadata) => {
-        if(err) {
-          fontStream.emit('error', err);
-        }
-        iconStream.metadata = theMetadata;
-
-        fontStream.write(iconStream);
-        if(0 === --bufferLength) {
-          fontStream.end();
-        }
-      });
-    });
-
+    outputStream.end();
     done();
   };
 
