@@ -7,13 +7,10 @@ const Vinyl = require('vinyl');
 const PluginError = require('plugin-error');
 const Stream = require('readable-stream');
 const path = require('path');
-const plexer = require('plexer');
 const defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
 
 module.exports = (options) => {
   const inputStream = new Stream.Transform({ objectMode: true });
-  const outputStream = new Stream.PassThrough({ objectMode: true });
-  const stream = plexer({ objectMode: true }, inputStream, outputStream);
   let fontStream;
 
   options = options || {};
@@ -25,7 +22,7 @@ module.exports = (options) => {
   if(options.appendUnicode) {
     throw new PluginError(
       'svgicons2svgfont',
-      'The "appendUnicode" option were renamed "prependUnicode".' +
+      'The "appendUnicode" option was renamed to "prependUnicode".' +
       ' See https://github.com/nfroidure/gulp-svgicons2svgfont/issues/33'
     );
   }
@@ -40,7 +37,7 @@ module.exports = (options) => {
 
   // Emit event containing codepoint mapping
   options.callback = function(glyphs) {
-    stream.emit('glyphs', glyphs.map((glyph) => {
+    inputStream.emit('glyphs', glyphs.map((glyph) => {
       const finalGlyph = {
         name: glyph.name,
         unicode: glyph.unicode,
@@ -54,7 +51,7 @@ module.exports = (options) => {
   };
 
   options.error = options.error || function(...args) {
-    stream.emit('error', new PluginError('svgicons2svgfont', args));
+    this.emit('error', new PluginError('svgicons2svgfont', args));
   };
 
   const metadataProvider = options.metadataProvider || defaultMetadataProvider({
@@ -65,13 +62,13 @@ module.exports = (options) => {
   inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
     // When null just pass through
     if(file.isNull()) {
-      outputStream.write(file); done();
+      this.push(file); done();
       return;
     }
 
     // If the ext doesn't match, pass it through
     if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) {
-      outputStream.write(file); done();
+      this.push(file); done();
       return;
     }
 
@@ -79,18 +76,17 @@ module.exports = (options) => {
       // Generating the font
       fontStream = new SVGIcon2SVGFontStream(options);
       fontStream.on('error', (err) => {
-        outputStream.emit('error', err);
+        this.emit('error', err);
       });
       // Create the font file
       const fontFile = new Vinyl({
         cwd: file.cwd,
         base: file.base,
         path: `${path.join(file.base, options.fileName)}.svg`,
+        contents: fontStream,
       });
 
-      fontFile.contents = fontStream;
-      outputStream.push(fontFile);
-      outputStream.end();
+      this.push(fontFile);
     }
 
     const iconStream = file.isBuffer() ?
@@ -113,9 +109,8 @@ module.exports = (options) => {
     if(fontStream) {
       fontStream.end();
     }
-    outputStream.end();
     done();
   };
 
-  return stream;
+  return inputStream;
 };
