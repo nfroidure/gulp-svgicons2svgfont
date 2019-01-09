@@ -8,10 +8,12 @@ const PluginError = require('plugin-error');
 const Stream = require('readable-stream');
 const path = require('path');
 const defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
+const fileSorter = require('svgicons2svgfont/src/filesorter');
 
 module.exports = (options) => {
   const inputStream = new Stream.Transform({ objectMode: true });
   let fontStream;
+  let filesBuffer = [];
 
   options = options || {};
   options.ignoreExt = options.ignoreExt || false;
@@ -72,44 +74,62 @@ module.exports = (options) => {
       return;
     }
 
-    if(!fontStream) {
-      // Generating the font
-      fontStream = new SVGIcon2SVGFontStream(options);
-      fontStream.on('error', (err) => {
-        this.emit('error', err);
-      });
-      // Create the font file
-      const fontFile = new Vinyl({
-        cwd: file.cwd,
-        base: file.base,
-        path: `${path.join(file.base, options.fileName)}.svg`,
-        contents: fontStream,
-      });
+    filesBuffer.push(file);
 
-      this.push(fontFile);
-    }
-
-    const iconStream = file.isBuffer() ?
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      streamifier.createReadStream(file.contents) :
-      file.contents;
-
-    metadataProvider(file.path, (err, metadata) => {
-      if(err) {
-        fontStream.emit('error', err);
-      }
-      iconStream.metadata = metadata;
-
-      fontStream.write(iconStream);
-      done();
-    });
+    done();
   };
 
   inputStream._flush = function _gulpSVGIcons2SVGFontFlush(done) {
-    if(fontStream) {
-      fontStream.end();
-    }
-    done();
+    // Sorting files
+    filesBuffer = filesBuffer.sort((fileA, fileB) => fileSorter(fileA.path, fileB.path));
+
+    // check if there is still a file in the buffer, if yes write it to the
+    // fontstream, otherwise close it and call done();
+    const writeFile = () => {
+      const file = filesBuffer.shift();
+      if(file) {
+        if(!fontStream) {
+
+          // Generating the font
+          fontStream = new SVGIcon2SVGFontStream(options);
+          fontStream.on('error', (err) => {
+            this.emit('error', err);
+          });
+          // Create the font file
+          const fontFile = new Vinyl({
+            cwd: file.cwd,
+            base: file.base,
+            path: `${path.join(file.base, options.fileName)}.svg`,
+            contents: fontStream,
+          });
+
+          this.push(fontFile);
+        }
+
+        const iconStream = file.isBuffer() ?
+          // eslint-disable-next-line security/detect-non-literal-fs-filename
+          streamifier.createReadStream(file.contents) :
+          file.contents;
+
+        metadataProvider(file.path, (err, metadata) => {
+          if(err) {
+            fontStream.emit('error', err);
+          }
+          iconStream.metadata = metadata;
+          fontStream.write(iconStream);
+
+          writeFile();
+        });
+      } else {
+        if(fontStream) {
+          fontStream.end();
+        }
+        // eslint-disable-next-line callback-return
+        done();
+      }
+    };
+
+    writeFile();
   };
 
   return inputStream;
