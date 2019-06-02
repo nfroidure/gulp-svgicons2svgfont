@@ -20,10 +20,9 @@ Then, add it to your `gulpfile.js`:
 var svgicons2svgfont = require('gulp-svgicons2svgfont');
 
 gulp.task('Iconfont', function(){
-  gulp.src(['assets/icons/*.svg'])
-    .pipe(svgicons2svgfont({
+    svgicons2svgfont(['assets/icons/*.svg'], {
       fontName: 'myfont'
-     }))
+    })
     .on('glyphs', function(glyphs) {
       console.log(glyphs);
       // Here generate CSS/SCSS  for your glyphs ...
@@ -32,7 +31,7 @@ gulp.task('Iconfont', function(){
 });
 ```
 
-Every icon must be prefixed with it's codepoint. The `appendCodepoints` option
+Every icon must be prefixed with it's codepoint. The `prependUnicode` option
  allows to do it automatically. Then, in your own CSS, you just have to use
  the corresponding codepoint to display your icon. See this
  [sample less mixin](https://github.com/ChtiJS/chtijs.francejs.org/blob/master/documents/less/_icons.less)
@@ -49,12 +48,6 @@ Please report icons to font issues to the
 ## API
 
 ### svgicons2svgfont(options)
-
-#### options.ignoreExt
-Type: `Boolean`
-Default value: `false`
-
-Set to true to also convert read icons that doesn't have the .svg extension.
 
 #### options.prependUnicode
 Type: `Boolean`

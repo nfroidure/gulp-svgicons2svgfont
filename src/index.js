@@ -1,136 +1,71 @@
 'use strict';
-
-const streamifier = require('streamifier');
-const SVGIcon2SVGFontStream = require('svgicons2svgfont');
-const log = require('fancy-log');
-const Vinyl = require('vinyl');
-const PluginError = require('plugin-error');
-const Stream = require('readable-stream');
-const path = require('path');
-const defaultMetadataProvider = require('svgicons2svgfont/src/metadata');
-const fileSorter = require('svgicons2svgfont/src/filesorter');
-
-module.exports = (options) => {
-  const inputStream = new Stream.Transform({ objectMode: true });
-  let fontStream;
-  let filesBuffer = [];
-
-  options = options || {};
-  options.ignoreExt = options.ignoreExt || false;
-  options.startUnicode = options.startUnicode || 0xEA01;
-  options.prependUnicode = !!options.prependUnicode;
-  options.fileName = options.fileName || options.fontName;
-
-  if(options.appendUnicode) {
-    throw new PluginError(
-      'svgicons2svgfont',
-      'The "appendUnicode" option was renamed to "prependUnicode".' +
-      ' See https://github.com/nfroidure/gulp-svgicons2svgfont/issues/33'
-    );
-  }
-
-  if(!options.fontName) {
-    throw new PluginError('svgicons2svgfont', 'Missing options.fontName');
-  }
-
-  options.log = options.log || function(...args) {
-    log('gulp-svgicons2svgfont:', ...args);
-  };
-
-  // Emit event containing codepoint mapping
-  options.callback = function(glyphs) {
-    inputStream.emit('glyphs', glyphs.map((glyph) => {
-      const finalGlyph = {
-        name: glyph.name,
-        unicode: glyph.unicode,
-      };
-
-      if(glyph.color) {
-        finalGlyph.color = glyph.color;
-      }
-      return finalGlyph;
-    }));
-  };
-
-  options.error = options.error || function(...args) {
-    this.emit('error', new PluginError('svgicons2svgfont', args));
-  };
-
-  const metadataProvider = options.metadataProvider || defaultMetadataProvider({
-    startUnicode: options.startUnicode,
-    prependUnicode: options.prependUnicode,
-  });
-
-  inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
-    // When null just pass through
-    if(file.isNull()) {
-      this.push(file); done();
-      return;
-    }
-
-    // If the ext doesn't match, pass it through
-    if((!options.ignoreExt) && '.svg' !== path.extname(file.path)) {
-      this.push(file); done();
-      return;
-    }
-
-    filesBuffer.push(file);
-
-    done();
-  };
-
-  inputStream._flush = function _gulpSVGIcons2SVGFontFlush(done) {
-    // Sorting files
-    filesBuffer = filesBuffer.sort((fileA, fileB) => fileSorter(fileA.path, fileB.path));
-
-    // check if there is still a file in the buffer, if yes write it to the
-    // fontstream, otherwise close it and call done();
-    const writeFile = () => {
-      const file = filesBuffer.shift();
-      if(file) {
-        if(!fontStream) {
-
-          // Generating the font
-          fontStream = new SVGIcon2SVGFontStream(options);
-          fontStream.on('error', (err) => {
-            this.emit('error', err);
-          });
-          // Create the font file
-          const fontFile = new Vinyl({
-            cwd: file.cwd,
-            base: file.base,
-            path: `${path.join(file.base, options.fileName)}.svg`,
-            contents: fontStream,
-          });
-
-          this.push(fontFile);
-        }
-
-        const iconStream = file.isBuffer() ?
-          // eslint-disable-next-line security/detect-non-literal-fs-filename
-          streamifier.createReadStream(file.contents) :
-          file.contents;
-
-        metadataProvider(file.path, (err, metadata) => {
-          if(err) {
-            fontStream.emit('error', err);
-          }
-          iconStream.metadata = metadata;
-          fontStream.write(iconStream);
-
-          writeFile();
-        });
-      } else {
-        if(fontStream) {
-          fontStream.end();
-        }
-        // eslint-disable-next-line callback-return
-        done();
-      }
-    };
-
-    writeFile();
-  };
-
-  return inputStream;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+// @ts-ignore
+var svgicons2svgfont_1 = __importDefault(require("svgicons2svgfont"));
+// @ts-ignore
+var iconsdir_1 = __importDefault(require("svgicons2svgfont/src/iconsdir"));
+// @ts-ignore
+var metadata_1 = __importDefault(require("svgicons2svgfont/src/metadata"));
+var fancy_log_1 = __importDefault(require("fancy-log"));
+var glob_1 = __importDefault(require("glob"));
+var plugin_error_1 = __importDefault(require("plugin-error"));
+var readable_stream_1 = __importDefault(require("readable-stream"));
+var vinyl_1 = __importDefault(require("vinyl"));
+var svgicons2svgfont = function (globs, options) {
+    // const inputStream = new Stream.Transform({ objectMode: true })
+    var resultStream = new readable_stream_1.default.Readable({ objectMode: true });
+    options.startUnicode = options.startUnicode || 0xea01;
+    options.prependUnicode = !!options.prependUnicode;
+    options.fileName = options.fileName || options.fontName;
+    if (options.appendUnicode) {
+        throw new plugin_error_1.default('svgicons2svgfont', 'The "appendUnicode" option was renamed to "prependUnicode".' +
+            ' See https://github.com/nfroidure/gulp-svgicons2svgfont/issues/33');
+    }
+    if (!options.fontName) {
+        throw new plugin_error_1.default('svgicons2svgfont', 'Missing options.fontName');
+    }
+    options.log =
+        options.log ||
+            function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                fancy_log_1.default.apply(void 0, ['gulp-svgicons2svgfont:'].concat(args));
+            };
+    // Emit event containing codepoint mapping
+    options.callback = function (glyphs) {
+        resultStream.emit('glyphs', glyphs.map(function (glyph) {
+            var finalGlyph = {
+                name: glyph.name,
+                unicode: glyph.unicode,
+            };
+            if (glyph.color) {
+                finalGlyph.color = glyph.color;
+            }
+            return finalGlyph;
+        }));
+    };
+    options.error =
+        options.error ||
+            function (error) {
+                this.emit('error', new plugin_error_1.default('svgicons2svgfont', error));
+            };
+    options.metadataProvider =
+        options.metadataProvider ||
+            metadata_1.default({
+                startUnicode: options.startUnicode,
+                prependUnicode: options.prependUnicode,
+            });
+    var globsArray = 'string' == typeof globs ? [globs] : globs;
+    var fontStream = new iconsdir_1.default([].concat.apply([], globsArray.map(function (g) { return glob_1.default.sync(g); })), options).pipe(new svgicons2svgfont_1.default(options));
+    var fontVinyl = new vinyl_1.default({
+        contents: fontStream,
+    });
+    resultStream.push(fontVinyl);
+    resultStream.push(null);
+    return resultStream;
+};
+module.exports = svgicons2svgfont;
