@@ -1,3 +1,7 @@
+# [7.0.0](https://github.com/nfroidure/gulp-svgicons2svgfont/compare/v4.0.1...v7.0.0) (2024-07-30)
+
+
+
 # [6.0.0](https://github.com/nfroidure/gulp-svgicons2svgfont/compare/v5.0.1...v6.0.0) (2019-06-02)
 
 gulp-svgicons2svgfont now a replacement for gulp.src instead of a plugin. You must pass the file globs directly. See readme. See https://github.com/nfroidure/gulp-svgicons2svgfont/issues/40
