@@ -1,3 +1,12 @@
+## [7.0.2](https://github.com/nfroidure/gulp-svgicons2svgfont/compare/v7.0.1...v7.0.2) (2024-08-01)
+
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([650aefe](https://github.com/nfroidure/gulp-svgicons2svgfont/commit/650aefe3fcf67979ef0602aa527282bb049189ad))
+
+
+
 ## [7.0.1](https://github.com/nfroidure/gulp-svgicons2svgfont/compare/v7.0.0...v7.0.1) (2024-08-01)
 
 
