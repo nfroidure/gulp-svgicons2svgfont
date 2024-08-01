@@ -1,3 +1,12 @@
+## [7.0.1](https://github.com/nfroidure/gulp-svgicons2svgfont/compare/v7.0.0...v7.0.1) (2024-08-01)
+
+
+### Bug Fixes
+
+* **dependencies:** add missing glob dependency ([15f7497](https://github.com/nfroidure/gulp-svgicons2svgfont/commit/15f74973b10e57b487712acb0af1088bb8b5cac0))
+
+
+
 # [7.0.0](https://github.com/nfroidure/gulp-svgicons2svgfont/compare/v4.0.1...v7.0.0) (2024-07-30)
 
 
