@@ -72,6 +72,7 @@
   "dependencies": {
     "@types/vinyl": "^2.0.12",
     "bufferstreams": "^4.0.0",
+    "glob": "^11.0.0",
     "plugin-error": "^2.0.1",
     "svgicons2svgfont": "^14.0.0",
     "vinyl": "^3.0.0"

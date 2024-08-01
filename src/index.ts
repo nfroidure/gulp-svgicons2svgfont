@@ -4,7 +4,7 @@ import {
   getMetadataService,
   type SVGIcons2SVGFontStreamOptions,
 } from 'svgicons2svgfont';
-import glob from 'glob';
+import { glob } from 'glob';
 import PluginError from 'plugin-error';
 import { Readable } from 'node:stream';
 import Vinyl from 'vinyl';

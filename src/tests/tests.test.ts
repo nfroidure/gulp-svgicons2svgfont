@@ -1,6 +1,5 @@
 import { describe, beforeEach, afterEach, test, expect } from '@jest/globals';
 import { Readable } from 'node:stream';
-import {} from 'node:fs';
 import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import type Vinyl from 'vinyl';
