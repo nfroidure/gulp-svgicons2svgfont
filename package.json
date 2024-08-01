@@ -14,7 +14,7 @@
       "distFiles": "'dist/**/*.js'",
       "ignore": [
         "dist",
-        "src/tests/results"
+        "fixtures/results"
       ],
       "bundleFiles": [
         "dist",
@@ -74,7 +74,7 @@
     "bufferstreams": "^4.0.0",
     "glob": "^11.0.0",
     "plugin-error": "^2.0.1",
-    "svgicons2svgfont": "^14.0.0",
+    "svgicons2svgfont": "^14.0.1",
     "vinyl": "^3.0.0"
   },
   "prettier": {

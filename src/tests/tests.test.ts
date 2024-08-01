@@ -16,11 +16,11 @@ import { getMetadataService } from 'svgicons2svgfont';
 
 describe('gulp-svgicons2svgfont', () => {
   beforeEach(async () => {
-    await mkdirp(join('src', 'tests', 'results'));
+    await mkdirp(join('fixtures', 'results'));
   });
 
   afterEach(async () => {
-    await rimraf(join('src', 'tests', 'results'));
+    await rimraf(join('fixtures', 'results'));
   });
 
   describe('must emit an error', () => {
@@ -30,12 +30,9 @@ describe('gulp-svgicons2svgfont', () => {
       try {
         await Promise.all([
           new Promise<void>((resolve, reject) => {
-            svgicons2svgfont(
-              join('src', 'tests', 'fixtures', 'invalidicon.svg'),
-              {
-                fontName: 'unprefixedicons',
-              },
-            )
+            svgicons2svgfont(join('fixtures', 'icons', 'invalidicon.svg'), {
+              fontName: 'unprefixedicons',
+            })
               .on('error', (err) => {
                 reject(err);
               })
@@ -58,13 +55,10 @@ describe('gulp-svgicons2svgfont', () => {
       const [stream, result] = StreamTest.toObjects<Vinyl>();
       const [contentStream1, contentResult1] = StreamTest.toChunks();
 
-      svgicons2svgfont(
-        join('src', 'tests', 'fixtures', 'cleanicons', '*.svg'),
-        {
-          fontName: 'cleanicons',
-          startUnicode: 0xe001,
-        },
-      ).pipe(stream);
+      svgicons2svgfont(join('fixtures', 'icons', 'cleanicons', '*.svg'), {
+        fontName: 'cleanicons',
+        startUnicode: 0xe001,
+      }).pipe(stream);
 
       const files = await result;
 
@@ -75,7 +69,7 @@ describe('gulp-svgicons2svgfont', () => {
 
       expect(Buffer.concat(await contentResult1).toString()).toEqual(
         await readFile(
-          join('src', 'tests', 'expected', 'test-cleanicons-font.svg'),
+          join('fixtures', 'expected', 'test-cleanicons-font.svg'),
           'utf-8',
         ),
       );
@@ -85,15 +79,12 @@ describe('gulp-svgicons2svgfont', () => {
       const [stream, result] = StreamTest.toObjects<Vinyl>();
       const [contentStream1, contentResult1] = StreamTest.toChunks();
 
-      svgicons2svgfont(
-        join('src', 'tests', 'fixtures', 'cleanicons', '*.svg'),
-        {
-          fontName: 'cleanicons',
-          metadataProvider: getMetadataService({
-            startUnicode: 0xe001,
-          }),
-        },
-      ).pipe(stream);
+      svgicons2svgfont(join('fixtures', 'icons', 'cleanicons', '*.svg'), {
+        fontName: 'cleanicons',
+        metadataProvider: getMetadataService({
+          startUnicode: 0xe001,
+        }),
+      }).pipe(stream);
 
       const files = await result;
 
@@ -104,7 +95,7 @@ describe('gulp-svgicons2svgfont', () => {
 
       expect(Buffer.concat(await contentResult1).toString()).toEqual(
         await readFile(
-          join('src', 'tests', 'expected', 'test-cleanicons-font.svg'),
+          join('fixtures', 'expected', 'test-cleanicons-font.svg'),
           'utf-8',
         ),
       );
@@ -114,13 +105,10 @@ describe('gulp-svgicons2svgfont', () => {
       const [stream, result] = StreamTest.toObjects<Vinyl>();
       const [contentStream1, contentResult1] = StreamTest.toChunks();
 
-      svgicons2svgfont(
-        join('src', 'tests', 'fixtures', 'prefixedicons', '*.svg'),
-        {
-          fontName: 'prefixedicons',
-          startUnicode: 0xe001,
-        },
-      ).pipe(stream);
+      svgicons2svgfont(join('fixtures', 'icons', 'prefixedicons', '*.svg'), {
+        fontName: 'prefixedicons',
+        startUnicode: 0xe001,
+      }).pipe(stream);
 
       const files = await result;
 
@@ -131,7 +119,7 @@ describe('gulp-svgicons2svgfont', () => {
 
       expect(Buffer.concat(await contentResult1).toString()).toEqual(
         await readFile(
-          join('src', 'tests', 'expected', 'test-prefixedicons-font.svg'),
+          join('fixtures', 'expected', 'test-prefixedicons-font.svg'),
           'utf-8',
         ),
       );
@@ -141,12 +129,9 @@ describe('gulp-svgicons2svgfont', () => {
       const [stream, result] = StreamTest.toObjects<Vinyl>();
       const [contentStream1, contentResult1] = StreamTest.toChunks();
 
-      svgicons2svgfont(
-        join('src', 'tests', 'fixtures', 'originalicons', '*.svg'),
-        {
-          fontName: 'originalicons',
-        },
-      ).pipe(stream);
+      svgicons2svgfont(join('fixtures', 'icons', 'originalicons', '*.svg'), {
+        fontName: 'originalicons',
+      }).pipe(stream);
 
       const files = await result;
 
@@ -157,7 +142,7 @@ describe('gulp-svgicons2svgfont', () => {
 
       expect(Buffer.concat(await contentResult1).toString()).toEqual(
         await readFile(
-          join('src', 'tests', 'expected', 'test-originalicons-font.svg'),
+          join('fixtures', 'expected', 'test-originalicons-font.svg'),
           'utf-8',
         ),
       );
@@ -167,8 +152,8 @@ describe('gulp-svgicons2svgfont', () => {
       beforeEach(async () => {
         await new Promise((resolve, reject) =>
           gulp
-            .src(join('src', 'tests', 'fixtures', 'unprefixedicons', '*.svg'))
-            .pipe(gulp.dest(join('src', 'tests', 'results', 'unprefixedicons')))
+            .src(join('fixtures', 'icons', 'unprefixedicons', '*.svg'))
+            .pipe(gulp.dest(join('fixtures', 'results', 'unprefixedicons')))
             .on('error', reject)
             .on('end', resolve),
         );
@@ -179,7 +164,7 @@ describe('gulp-svgicons2svgfont', () => {
         const [contentStream1, contentResult1] = StreamTest.toChunks();
 
         svgicons2svgfont(
-          join('src', 'tests', 'results', 'unprefixedicons', '*.svg'),
+          join('fixtures', 'results', 'unprefixedicons', '*.svg'),
           {
             fontName: 'unprefixedicons',
             prependUnicode: true,
@@ -195,7 +180,7 @@ describe('gulp-svgicons2svgfont', () => {
 
         expect(Buffer.concat(await contentResult1).toString()).toEqual(
           await readFile(
-            join('src', 'tests', 'expected', 'test-unprefixedicons-font.svg'),
+            join('fixtures', 'expected', 'test-unprefixedicons-font.svg'),
             'utf-8',
           ),
         );
@@ -210,8 +195,7 @@ describe('gulp-svgicons2svgfont', () => {
         for (const oldFile of Object.keys(expectedRenames)) {
           const newFile = expectedRenames[oldFile];
           const newFilePath = join(
-            'src',
-            'tests',
+            'fixtures',
             'results',
             'unprefixedicons',
             newFile,
@@ -220,12 +204,12 @@ describe('gulp-svgicons2svgfont', () => {
           expect(await readFile(newFilePath)).toBeTruthy();
           expect(
             await readFile(
-              join('src', 'tests', 'results', 'unprefixedicons', newFile),
+              join('fixtures', 'results', 'unprefixedicons', newFile),
               'utf8',
             ),
           ).toEqual(
             await readFile(
-              join('src', 'tests', 'fixtures', 'unprefixedicons', oldFile),
+              join('fixtures', 'icons', 'unprefixedicons', oldFile),
               'utf8',
             ),
           );
@@ -237,8 +221,8 @@ describe('gulp-svgicons2svgfont', () => {
       beforeEach(async () => {
         await new Promise((resolve, reject) =>
           gulp
-            .src(join('src', 'tests', 'fixtures', 'unicons', '*.svg'))
-            .pipe(gulp.dest(join('src', 'tests', 'results', 'unicons')))
+            .src(join('fixtures', 'icons', 'unicons', '*.svg'))
+            .pipe(gulp.dest(join('fixtures', 'results', 'unicons')))
             .on('error', reject)
             .on('end', resolve),
         );
@@ -248,7 +232,7 @@ describe('gulp-svgicons2svgfont', () => {
         const [stream, result] = StreamTest.toObjects<Vinyl>();
         const [contentStream1, contentResult1] = StreamTest.toChunks();
 
-        svgicons2svgfont(join('src', 'tests', 'results', 'unicons', '*.svg'), {
+        svgicons2svgfont(join('fixtures', 'results', 'unicons', '*.svg'), {
           fontName: 'unicons',
           prependUnicode: true,
         }).pipe(stream);
@@ -262,7 +246,7 @@ describe('gulp-svgicons2svgfont', () => {
 
         expect(Buffer.concat(await contentResult1).toString()).toEqual(
           await readFile(
-            join('src', 'tests', 'expected', 'test-unicons-font.svg'),
+            join('fixtures', 'expected', 'test-unicons-font.svg'),
             'utf-8',
           ),
         );
@@ -275,8 +259,7 @@ describe('gulp-svgicons2svgfont', () => {
         for (const oldFile of Object.keys(expectedRenames)) {
           const newFile = expectedRenames[oldFile];
           const newFilePath = join(
-            'src',
-            'tests',
+            'fixtures',
             'results',
             'unicons',
             newFile,
@@ -285,12 +268,12 @@ describe('gulp-svgicons2svgfont', () => {
           expect(await readFile(newFilePath)).toBeTruthy();
           expect(
             await readFile(
-              join('src', 'tests', 'results', 'unicons', newFile),
+              join('fixtures', 'results', 'unicons', newFile),
               'utf8',
             ),
           ).toEqual(
             await readFile(
-              join('src', 'tests', 'fixtures', 'unicons', oldFile),
+              join('fixtures', 'icons', 'unicons', oldFile),
               'utf8',
             ),
           );
@@ -304,13 +287,10 @@ describe('gulp-svgicons2svgfont', () => {
 
       let codepoints;
 
-      svgicons2svgfont(
-        join('src', 'tests', 'fixtures', 'cleanicons', '*.svg'),
-        {
-          fontName: 'cleanicons',
-          startUnicode: 0xe001,
-        },
-      )
+      svgicons2svgfont(join('fixtures', 'icons', 'cleanicons', '*.svg'), {
+        fontName: 'cleanicons',
+        startUnicode: 0xe001,
+      })
         .on('glyphs', (c) => {
           codepoints = c;
         })
@@ -325,7 +305,7 @@ describe('gulp-svgicons2svgfont', () => {
 
       expect(Buffer.concat(await contentResult1).toString()).toEqual(
         await readFile(
-          join('src', 'tests', 'expected', 'test-cleanicons-font.svg'),
+          join('fixtures', 'expected', 'test-cleanicons-font.svg'),
           'utf-8',
         ),
       );
@@ -333,9 +313,7 @@ describe('gulp-svgicons2svgfont', () => {
       expect(codepoints).toEqual(
         JSON.parse(
           (
-            await readFile(
-              join('src', 'tests', 'expected', 'test-codepoints.json'),
-            )
+            await readFile(join('fixtures', 'expected', 'test-codepoints.json'))
           ).toString(),
         ),
       );
@@ -345,14 +323,11 @@ describe('gulp-svgicons2svgfont', () => {
       const [stream, result] = StreamTest.toObjects<Vinyl>();
       const [contentStream1, contentResult1] = StreamTest.toChunks();
 
-      svgicons2svgfont(
-        join('src', 'tests', 'fixtures', 'cleanicons', '*.svg'),
-        {
-          fontName: 'cleanicons',
-          fileName: 'newName',
-          startUnicode: 0xe001,
-        },
-      ).pipe(stream);
+      svgicons2svgfont(join('fixtures', 'icons', 'cleanicons', '*.svg'), {
+        fontName: 'cleanicons',
+        fileName: 'newName',
+        startUnicode: 0xe001,
+      }).pipe(stream);
 
       const files = await result;
 
@@ -364,7 +339,7 @@ describe('gulp-svgicons2svgfont', () => {
 
       expect(Buffer.concat(await contentResult1).toString()).toEqual(
         await readFile(
-          join('src', 'tests', 'expected', 'test-cleanicons-font.svg'),
+          join('fixtures', 'expected', 'test-cleanicons-font.svg'),
           'utf-8',
         ),
       );
