@@ -26,9 +26,9 @@ npm install --save-dev gulp-svgicons2svgfont
 Then, add it to your `gulpfile.js`:
 
 ```js
-import svgicons2svgfont from 'gulp-svgicons2svgfont';
+import { svgicons2svgfont } from 'gulp-svgicons2svgfont';
 
-gulp.task('Iconfont', function () {
+gulp.task('Iconfont', () => {
   svgicons2svgfont(['assets/icons/*.svg'], {
     fontName: 'myfont',
   })
