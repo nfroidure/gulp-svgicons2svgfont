@@ -28,7 +28,7 @@ Then, add it to your `gulpfile.js`:
 ```js
 import { svgicons2svgfont } from 'gulp-svgicons2svgfont';
 
-gulp.task('Iconfont', () => {
+gulp.task('Iconfont', async () => {
   svgicons2svgfont(['assets/icons/*.svg'], {
     fontName: 'myfont',
   })
